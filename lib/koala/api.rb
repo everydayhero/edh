@@ -92,6 +92,3 @@ module Koala
     end
   end
 end
-
-# legacy support for old pre-1.2 API interfaces
-require 'koala/api/legacy'

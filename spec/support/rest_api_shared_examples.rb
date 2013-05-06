@@ -24,33 +24,6 @@ shared_examples_for "Koala RestAPI" do
       @api.rest_call('anything')
     end
 
-    it "sets the read_only option to true if the method is listed in the read-only list" do
-      method = Koala::Facebook::RestAPI::READ_ONLY_METHODS.first
-
-      @api.should_receive(:api).with(
-        anything,
-        anything,
-        anything,
-        hash_including(:read_only => true)
-      )
-
-      @api.rest_call(method)
-    end
-
-    it "sets the read_only option to false if the method is not inthe read-only list" do
-      method = "I'm not a read-only method"
-
-      @api.should_receive(:api).with(
-        anything,
-        anything,
-        anything,
-        hash_including(:read_only => false)
-      )
-
-      @api.rest_call(method)
-    end
-
-
     it "takes an optional hash of arguments" do
       args = {:arg1 => 'arg1'}
 
