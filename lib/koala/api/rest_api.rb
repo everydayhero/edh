@@ -30,8 +30,6 @@ module Koala
       # 
       # @return the result from Passport
       def rest_call(fb_method, args = {}, options = {}, verb = "get")
-        options = options.merge!(:read_only => READ_ONLY_METHODS.include?(fb_method.to_s))
-
         api("method/#{fb_method}", args.merge('format' => 'json'), verb, options) do |response|
           # check for REST API-specific errors
           if response.status >= 400
@@ -58,68 +56,6 @@ module Koala
 
       # @private
       # read-only methods for which we can use API-read
-      READ_ONLY_METHODS = [
-        'admin.getallocation',
-        'admin.getappproperties',
-        'admin.getbannedusers',
-        'admin.getlivestreamvialink',
-        'admin.getmetrics',
-        'admin.getrestrictioninfo',
-        'application.getpublicinfo',
-        'auth.getapppublickey',
-        'auth.getsession',
-        'auth.getsignedpublicsessiondata',
-        'comments.get',
-        'connect.getunconnectedfriendscount',
-        'dashboard.getactivity',
-        'dashboard.getcount',
-        'dashboard.getglobalnews',
-        'dashboard.getnews',
-        'dashboard.multigetcount',
-        'dashboard.multigetnews',
-        'data.getcookies',
-        'events.get',
-        'events.getmembers',
-        'fbml.getcustomtags',
-        'feed.getappfriendstories',
-        'feed.getregisteredtemplatebundlebyid',
-        'feed.getregisteredtemplatebundles',
-        'fql.multiquery',
-        'fql.query',
-        'friends.arefriends',
-        'friends.get',
-        'friends.getappusers',
-        'friends.getlists',
-        'friends.getmutualfriends',
-        'gifts.get',
-        'groups.get',
-        'groups.getmembers',
-        'intl.gettranslations',
-        'links.get',
-        'notes.get',
-        'notifications.get',
-        'pages.getinfo',
-        'pages.isadmin',
-        'pages.isappadded',
-        'pages.isfan',
-        'permissions.checkavailableapiaccess',
-        'permissions.checkgrantedapiaccess',
-        'photos.get',
-        'photos.getalbums',
-        'photos.gettags',
-        'profile.getinfo',
-        'profile.getinfooptions',
-        'stream.get',
-        'stream.getcomments',
-        'stream.getfilters',
-        'users.getinfo',
-        'users.getloggedinuser',
-        'users.getstandardinfo',
-        'users.hasapppermission',
-        'users.isappuser',
-        'users.isverified',
-        'video.getuploadlimits'
-      ]
     end
 
   end # module Passport
