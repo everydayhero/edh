@@ -8,7 +8,7 @@ module Koala
     class OAuthSignatureError < ::Koala::KoalaError; end
 
     class APIError < ::Koala::KoalaError
-      attr_accessor :fb_error_type, :fb_error_code, :fb_error_subcode, :fb_error_message,
+      attr_accessor :pp_error_type, :pp_error_code, :pp_error_subcode, :pp_error_message,
                     :http_status, :response_body
 
       # Create a new API Error
@@ -42,10 +42,10 @@ module Koala
             error_info ||= {}
           end
 
-          self.fb_error_type = error_info["type"]
-          self.fb_error_code = error_info["code"]
-          self.fb_error_subcode = error_info["error_subcode"]
-          self.fb_error_message = error_info["message"]
+          self.pp_error_type = error_info["type"]
+          self.pp_error_code = error_info["code"]
+          self.pp_error_subcode = error_info["error_subcode"]
+          self.pp_error_message = error_info["message"]
 
           error_array = []
           %w(type code error_subcode message).each do |key|

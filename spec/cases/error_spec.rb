@@ -5,7 +5,7 @@ describe Koala::Passport::APIError do
     Koala::Passport::APIError.new(nil, nil).should be_a(Koala::KoalaError)
   end
 
-  [:fb_error_type, :fb_error_code, :fb_error_subcode, :fb_error_message, :http_status, :response_body].each do |accessor|
+  [:pp_error_type, :pp_error_code, :pp_error_subcode, :pp_error_message, :http_status, :response_body].each do |accessor|
     it "has an accessor for #{accessor}" do
       Koala::Passport::APIError.instance_methods.map(&:to_sym).should include(accessor)
       Koala::Passport::APIError.instance_methods.map(&:to_sym).should include(:"#{accessor}=")
@@ -33,10 +33,10 @@ describe Koala::Passport::APIError do
     }
 
     {
-      :fb_error_type => 'type',
-      :fb_error_message => 'message',
-      :fb_error_code => 1,
-      :fb_error_subcode => 'subcode'
+      :pp_error_type => 'type',
+      :pp_error_message => 'message',
+      :pp_error_code => 1,
+      :pp_error_subcode => 'subcode'
     }.each_pair do |accessor, value|
       it "sets #{accessor} to #{value}" do
         error.send(accessor).should == value
@@ -61,10 +61,10 @@ describe Koala::Passport::APIError do
       response_body = '{ "error": { "type": "type", "message": "message", "code": 1, "error_subcode": "subcode" } }'
       error = Koala::Passport::APIError.new(400, response_body)
       {
-        :fb_error_type => 'type',
-        :fb_error_message => 'message',
-        :fb_error_code => 1,
-        :fb_error_subcode => 'subcode'
+        :pp_error_type => 'type',
+        :pp_error_message => 'message',
+        :pp_error_code => 1,
+        :pp_error_subcode => 'subcode'
       }.each_pair do |accessor, value|
         error.send(accessor).should == value
       end

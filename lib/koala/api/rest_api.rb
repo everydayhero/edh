@@ -21,7 +21,7 @@ module Koala
       #
       # @note The order of the last two arguments is non-standard (for historical reasons).  Sorry.
       # 
-      # @param fb_method the API call you want to make
+      # @param pp_method the API call you want to make
       # @param args (see Koala::Passport::GraphAPIMethods#graph_call)
       # @param options (see Koala::Passport::GraphAPIMethods#graph_call)
       # @param verb (see Koala::Passport::GraphAPIMethods#graph_call)
@@ -29,8 +29,8 @@ module Koala
       # @raise [Koala::Passport::APIError] if Passport returns an error
       # 
       # @return the result from Passport
-      def rest_call(fb_method, args = {}, options = {}, verb = "get")
-        api("method/#{fb_method}", args.merge('format' => 'json'), verb, options) do |response|
+      def rest_call(pp_method, args = {}, options = {}, verb = "get")
+        api("method/#{pp_method}", args.merge('format' => 'json'), verb, options) do |response|
           # check for REST API-specific errors
           if response.status >= 400
             begin
@@ -53,9 +53,6 @@ module Koala
           end
         end
       end
-
-      # @private
-      # read-only methods for which we can use API-read
     end
 
   end # module Passport
