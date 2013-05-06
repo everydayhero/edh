@@ -237,15 +237,6 @@ describe "Koala::HTTPService" do
         Koala::HTTPService.make_request("anything", args, "post")
       end
 
-      it "turns any UploadableIOs to UploadIOs" do
-        # technically this is done for all requests, but you don't send GET requests with files
-        upload_io = stub("UploadIO")
-        u = Koala::UploadableIO.new("/path/to/stuff", "img/jpg")
-        u.stub(:to_upload_io).and_return(upload_io)
-        @mock_connection.should_receive(:post).with(anything, hash_including("source" => upload_io)).and_return(@mock_http_response)
-        Koala::HTTPService.make_request("anything", {:source => u}, "post")
-      end
-
       it "logs verb, url and params to debug" do
         args = {"a" => :b, "c" => 3}
         log_message_stem = "POST: anything params: "
