@@ -4,9 +4,6 @@ module Koala
 
   module Passport
 
-    # The OAuth signature is incomplete, invalid, or using an unsupported algorithm
-    class OAuthSignatureError < ::Koala::KoalaError; end
-
     class APIError < ::Koala::KoalaError
       attr_accessor :pp_error_type, :pp_error_code, :pp_error_subcode, :pp_error_message,
                     :http_status, :response_body
@@ -66,9 +63,6 @@ module Koala
 
     # Passport returned an invalid response body
     class BadPassportResponse < APIError; end
-
-    # Passport responded with an error while attempting to request an access token
-    class OAuthTokenRequestError < APIError; end
 
     # Any error with a 5xx HTTP status code
     class ServerError < APIError; end

@@ -79,21 +79,9 @@ describe Koala::KoalaError do
   end
 end
 
-describe Koala::Passport::OAuthSignatureError do
-  it "is a Koala::KoalaError" do
-     Koala::KoalaError.new.should be_a(Koala::KoalaError)
-  end
-end
-
 describe Koala::Passport::BadPassportResponse do
   it "is a Koala::Passport::APIError" do
      Koala::Passport::BadPassportResponse.new(nil, nil).should be_a(Koala::Passport::APIError)
-  end
-end
-
-describe Koala::Passport::OAuthTokenRequestError do
-  it "is a Koala::Passport::APIError" do
-     Koala::Passport::OAuthTokenRequestError.new(nil, nil).should be_a(Koala::Passport::APIError)
   end
 end
 

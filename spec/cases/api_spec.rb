@@ -131,7 +131,6 @@ describe "Koala::Passport::API" do
     end
 
     it_should_behave_like "Koala RestAPI"
-    it_should_behave_like "Koala RestAPI with an access token"
   end
 
   describe "without an access token" do
@@ -140,6 +139,5 @@ describe "Koala::Passport::API" do
     end
 
     it_should_behave_like "Koala RestAPI"
-    it_should_behave_like "Koala RestAPI without an access token"
   end
 end

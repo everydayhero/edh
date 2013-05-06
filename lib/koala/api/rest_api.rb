@@ -5,26 +5,12 @@ module Koala
     # Methods used to interact with Passport's REST API.  
 
     module RestAPIMethods
-      # Set a Passport application's properties.
-      # 
-      # @param properties a hash of properties you want to update with their new values.
-      # @param (see #rest_call)
-      # @param options (see #rest_call)
-      #
-      # @return true if successful, false if not.  (This call currently doesn't give useful feedback on failure.)
-      def set_app_properties(properties, args = {}, options = {})
-        raise AuthenticationError.new(nil, nil, "setAppProperties requires an access token") unless @access_token
-        rest_call("admin.setAppProperties", args.merge(:properties => MultiJson.dump(properties)), options, "post")
-      end
 
       # Make a call to the REST API. 
       #
       # @note The order of the last two arguments is non-standard (for historical reasons).  Sorry.
       # 
       # @param pp_method the API call you want to make
-      # @param args (see Koala::Passport::GraphAPIMethods#graph_call)
-      # @param options (see Koala::Passport::GraphAPIMethods#graph_call)
-      # @param verb (see Koala::Passport::GraphAPIMethods#graph_call)
       # 
       # @raise [Koala::Passport::APIError] if Passport returns an error
       # 
