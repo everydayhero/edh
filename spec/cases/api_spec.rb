@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe "Koala::Facebook::API" do
+describe "Koala::Passport::API" do
   before(:each) do
-    @service = Koala::Facebook::API.new
+    @service = Koala::Passport::API.new
   end
 
   it "doesn't include an access token if none was given" do
@@ -18,7 +18,7 @@ describe "Koala::Facebook::API" do
 
   it "includes an access token if given" do
     token = 'adfadf'
-    service = Koala::Facebook::API.new token
+    service = Koala::Passport::API.new token
 
     Koala.should_receive(:make_request).with(
       anything,
@@ -32,7 +32,7 @@ describe "Koala::Facebook::API" do
 
   it "has an attr_reader for access token" do
     token = 'adfadf'
-    service = Koala::Facebook::API.new token
+    service = Koala::Passport::API.new token
     service.access_token.should == token
   end
 
@@ -100,7 +100,7 @@ describe "Koala::Facebook::API" do
   it "raises an API error if the HTTP response code is greater than or equal to 500" do
     Koala.stub(:make_request).and_return(Koala::HTTPService::Response.new(500, 'response body', {}))
 
-    lambda { @service.api('anything') }.should raise_exception(Koala::Facebook::APIError)
+    lambda { @service.api('anything') }.should raise_exception(Koala::Passport::APIError)
   end
 
   it "handles rogue true/false as responses" do
@@ -127,7 +127,7 @@ describe "Koala::Facebook::API" do
 
   describe "with an access token" do
     before(:each) do
-      @api = Koala::Facebook::API.new(@token)
+      @api = Koala::Passport::API.new(@token)
     end
 
     it_should_behave_like "Koala RestAPI"
@@ -136,7 +136,7 @@ describe "Koala::Facebook::API" do
 
   describe "without an access token" do
     before(:each) do
-      @api = Koala::Facebook::API.new
+      @api = Koala::Passport::API.new
     end
 
     it_should_behave_like "Koala RestAPI"

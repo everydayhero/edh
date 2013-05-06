@@ -1,6 +1,5 @@
 require 'faraday'
 require 'koala/http_service/multipart_request'
-require 'koala/http_service/uploadable_io'
 require 'koala/http_service/response'
 
 module Koala
@@ -15,7 +14,7 @@ module Koala
     @http_options ||= {}
 
     # Koala's default middleware stack.
-    # We encode requests in a Facebook-compatible multipart request,
+    # We encode requests in a Passport-compatible multipart request,
     # and use whichever adapter has been configured for this application.
     DEFAULT_MIDDLEWARE = Proc.new do |builder|
       builder.use Koala::HTTPService::MultipartRequest
@@ -23,7 +22,7 @@ module Koala
       builder.adapter Faraday.default_adapter
     end
 
-    # The address of the appropriate Facebook server.
+    # The address of the appropriate Passport server.
     #
     # @param options various flags to indicate which server to use.
     # @option options :rest_api use the old REST API instead of the Graph API
@@ -33,35 +32,32 @@ module Koala
     #
     # @return a complete server address with protocol
     def self.server(options = {})
-      server = Facebook::REST_SERVER
-      server.gsub!(/\.facebook/, "-video.facebook") if options[:video]
-      server.gsub!(/\.facebook/, ".beta.facebook") if options[:beta]
+      server = Passport::REST_SERVER
       "#{options[:use_ssl] ? "https" : "http"}://#{server}"
     end
 
-    # Makes a request directly to Facebook.
+    # Makes a request directly to Passport.
     # @note You'll rarely need to call this method directly.
     #
-    # @see Koala::Facebook::API#api
-    # @see Koala::Facebook::GraphAPIMethods#graph_call
-    # @see Koala::Facebook::RestAPIMethods#rest_call
+    # @see Koala::Passport::API#api
+    # @see Koala::Passport::RestAPIMethods#rest_call
     #
     # @param path the server path for this request
-    # @param args (see Koala::Facebook::API#api)
+    # @param args (see Koala::Passport::API#api)
     # @param verb the HTTP method to use.
     #             If not get or post, this will be turned into a POST request with the appropriate :method
     #             specified in the arguments.
-    # @param options (see Koala::Facebook::API#api)
+    # @param options (see Koala::Passport::API#api)
     #
-    # @raise an appropriate connection error if unable to make the request to Facebook
+    # @raise an appropriate connection error if unable to make the request to Passport
     #
-    # @return [Koala::HTTPService::Response] a response object representing the results from Facebook
+    # @return [Koala::HTTPService::Response] a response object representing the results from Passport
     def self.make_request(path, args, verb, options = {})
       # if the verb isn't get or post, send it as a post argument
       args.merge!({:method => verb}) && verb = "post" if verb != "get" && verb != "post"
 
-      # turn all the keys to strings (Faraday has issues with symbols under 1.8.7) and resolve UploadableIOs
-      params = args.inject({}) {|hash, kv| hash[kv.first.to_s] = kv.last.is_a?(UploadableIO) ? kv.last.to_upload_io : kv.last; hash}
+      # turn all the keys to strings (Faraday has issues with symbols under 1.8.7)
+      params = args.inject({}) {|hash, kv| hash[kv.first.to_s] = kv.last; hash}
 
       # figure out our options for this request
       request_options = {:params => (verb == "get" ? params : {})}.merge(http_options || {}).merge(process_options(options))

@@ -2,12 +2,12 @@
 require 'koala/api/rest_api'
 
 module Koala
-  module Facebook
+  module Passport
     class API
       # Creates a new API client.
       # @param [String] access_token access token
       # @note If no access token is provided, you can only access some public information.
-      # @return [Koala::Facebook::API] the API client
+      # @return [Koala::Passport::API] the API client
       def initialize(access_token = nil)
         @access_token = access_token
       end
@@ -16,28 +16,26 @@ module Koala
 
       include RestAPIMethods
 
-      # Makes a request to the appropriate Facebook API.
+      # Makes a request to the appropriate Passport API.
       # @note You'll rarely need to call this method directly.
       #
-      # @see GraphAPIMethods#graph_call
       # @see RestAPIMethods#rest_call
       #
       # @param path the server path for this request (leading / is prepended if not present)
-      # @param args arguments to be sent to Facebook
+      # @param args arguments to be sent to Passport
       # @param verb the HTTP method to use
       # @param options request-related options for Koala and Faraday.
       #                See https://github.com/arsduo/koala/wiki/HTTP-Services for additional options.
       # @option options [Symbol] :http_component which part of the response (headers, body, or status) to return
-      # @option options [Boolean] :beta use Facebook's beta tier
       # @option options [Boolean] :use_ssl force SSL for this request, even if it's tokenless.
       #                                    (All API requests with access tokens use SSL.)
       # @param error_checking_block a block to evaluate the response status for additional JSON-encoded errors
       #
       # @yield The response for evaluation
       #
-      # @raise [Koala::Facebook::ServerError] if Facebook returns an error (response status >= 500)
+      # @raise [Koala::Passport::ServerError] if Passport returns an error (response status >= 500)
       #
-      # @return the body of the response from Facebook (unless another http_component is requested)
+      # @return the body of the response from Passport (unless another http_component is requested)
       def api(path, args = {}, verb = "get", options = {}, &error_checking_block)
         # If a access token is explicitly provided, use that
         # This is explicitly needed in batch requests so GraphCollection
@@ -54,7 +52,7 @@ module Koala
         result = Koala.make_request(path, args, verb, options)
 
         if result.status.to_i >= 500
-          raise Koala::Facebook::ServerError.new(result.status.to_i, result.body)
+          raise Koala::Passport::ServerError.new(result.status.to_i, result.body)
         end
 
         yield result if error_checking_block
@@ -64,7 +62,7 @@ module Koala
           component == :response ? result : result.send(options[:http_component])
         else
           # parse the body as JSON and run it through the error checker (if provided)
-          # Note: Facebook sometimes sends results like "true" and "false", which aren't strictly objects
+          # Note: Passport sometimes sends results like "true" and "false", which aren't strictly objects
           # and cause MultiJson.load to fail -- so we account for that by wrapping the result in []
           MultiJson.load("[#{result.body.to_s}]")[0]
         end
@@ -72,7 +70,7 @@ module Koala
 
       private
 
-      # Sanitizes Ruby objects into Facebook-compatible string values.
+      # Sanitizes Ruby objects into Passport-compatible string values.
       #
       # @param parameters a hash of parameters.
       #

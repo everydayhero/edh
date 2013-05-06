@@ -2,13 +2,11 @@ module Koala
 
   class KoalaError < StandardError; end
 
-  module Facebook
+  module Passport
 
     # The OAuth signature is incomplete, invalid, or using an unsupported algorithm
     class OAuthSignatureError < ::Koala::KoalaError; end
 
-    # Facebook responded with an error to an API request. If the exception contains a nil
-    # http_status, then the error was detected before making a call to Facebook. (e.g. missing access token)
     class APIError < ::Koala::KoalaError
       attr_accessor :fb_error_type, :fb_error_code, :fb_error_subcode, :fb_error_message,
                     :http_status, :response_body
@@ -66,10 +64,10 @@ module Koala
       end
     end
 
-    # Facebook returned an invalid response body
-    class BadFacebookResponse < APIError; end
+    # Passport returned an invalid response body
+    class BadPassportResponse < APIError; end
 
-    # Facebook responded with an error while attempting to request an access token
+    # Passport responded with an error while attempting to request an access token
     class OAuthTokenRequestError < APIError; end
 
     # Any error with a 5xx HTTP status code

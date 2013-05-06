@@ -7,7 +7,7 @@ require 'koala/errors'
 require 'koala/api'
 require 'koala/test_users'
 
-# HTTP module so we can communicate with Facebook
+# HTTP module so we can communicate with Passport
 require 'koala/http_service'
 
 # miscellaneous
@@ -15,8 +15,8 @@ require 'koala/utils'
 require 'koala/version'
 
 module Koala
-  # A Ruby client library for the Facebook Platform.
-  # See http://github.com/arsduo/koala/wiki for a general introduction to Koala
+  # A Ruby client library for the Passport Platform.
+  # See http://github.com/everydayhero/koala/wiki for a general introduction to Koala
   # and the Graph API.
   
   # Making HTTP requests

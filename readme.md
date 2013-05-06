@@ -35,7 +35,7 @@ Facebook's [Graph API Explorer](https://developers.facebook.com/tools/explorer) 
 Then, go exploring:
 
 ```ruby
-@graph = Koala::Facebook::API.new(oauth_access_token)
+@graph = Koala::Passport::API.new(oauth_access_token)
 
 profile = @graph.get_object("me")
 friends = @graph.get_connections("me", "friends")
@@ -99,7 +99,7 @@ Where the Graph API and the old REST API overlap, you should choose the Graph AP
 
 Fortunately, Koala supports the REST API using the very same interface; to use this, instantiate an API:
 ```ruby
-@rest = Koala::Facebook::API.new(oauth_access_token)
+@rest = Koala::Passport::API.new(oauth_access_token)
 
 @rest.fql_query(my_fql_query) # convenience method
 @rest.fql_multiquery(fql_query_hash) # convenience method
@@ -108,9 +108,9 @@ Fortunately, Koala supports the REST API using the very same interface; to use t
 
 Of course, you can use the Graph API methods on the same object -- the power of two APIs right in the palm of your hand.
 ```ruby
-@api = Koala::Facebook::API.new(oauth_access_token)
+@api = Koala::Passport::API.new(oauth_access_token)
 
-@api = Koala::Facebook::API.new(oauth_access_token)
+@api = Koala::Passport::API.new(oauth_access_token)
 fql = @api.fql_query(my_fql_query)
 @api.put_wall_post(process_result(fql))
 ```
@@ -119,7 +119,7 @@ OAuth
 -----
 You can use the Graph and REST APIs without an OAuth access token, but the real magic happens when you provide Facebook an OAuth token to prove you're authenticated.  Koala provides an OAuth class to make that process easy:
 ```ruby
-@oauth = Koala::Facebook::OAuth.new(app_id, app_secret, callback_url)
+@oauth = Koala::Passport::OAuth.new(app_id, app_secret, callback_url)
 ```
 
 If your application uses Koala and the Facebook [JavaScript SDK](http://github.com/facebook/facebook-js-sdk) (formerly Facebook Connect), you can use the OAuth class to parse the cookies:
@@ -161,7 +161,7 @@ Sometimes, reaching out to Facebook is a pain -- let it reach out to you instead
 
 Koala makes it easy to interact with your applications using the RealtimeUpdates class:
 ```ruby
-@updates = Koala::Facebook::RealtimeUpdates.new(:app_id => app_id, :secret => secret)
+@updates = Koala::Passport::RealtimeUpdates.new(:app_id => app_id, :secret => secret)
 ```
 You can do just about anything with your real-time update subscriptions using the RealtimeUpdates class:
 ```ruby
@@ -177,7 +177,7 @@ You can do just about anything with your real-time update subscriptions using th
 And to top it all off, RealtimeUpdates provides a static method to respond to Facebook servers' verification of your callback URLs:
 ```ruby
 # Returns the hub.challenge parameter in params if the verify token in params matches verify_token
-Koala::Facebook::RealtimeUpdates.meet_challenge(params, your_verify_token)
+Koala::Passport::RealtimeUpdates.meet_challenge(params, your_verify_token)
 ```
 For more information about meet_challenge and the RealtimeUpdates class, check out the Real-Time Updates page on the wiki.
 
@@ -186,9 +186,9 @@ Test Users
 
 We also support the test users API, allowing you to conjure up fake users and command them to do your bidding using the Graph or REST API:
 ```ruby
-@test_users = Koala::Facebook::TestUsers.new(:app_id => id, :secret => secret)
+@test_users = Koala::Passport::TestUsers.new(:app_id => id, :secret => secret)
 user = @test_users.create(is_app_installed, desired_permissions)
-user_graph_api = Koala::Facebook::API.new(user["access_token"])
+user_graph_api = Koala::Passport::API.new(user["access_token"])
 # or, if you want to make a whole community:
 @test_users.create_network(network_size, is_app_installed, common_permissions)
 ```

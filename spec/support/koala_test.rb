@@ -14,16 +14,16 @@ module KoalaTest
 
     unless ENV['LIVE']
       # By default the Koala specs are run using stubs for HTTP requests,
-      # so they won't fail due to Facebook-imposed rate limits or server timeouts.
+      # so they won't fail due to Passport-imposed rate limits or server timeouts.
       #
       # However as a result they are more brittle since
-      # we are not testing the latest responses from the Facebook servers.
-      # To be certain all specs pass with the current Facebook services,
+      # we are not testing the latest responses from the Passport servers.
+      # To be certain all specs pass with the current Passport services,
       # run LIVE=true bundle exec rake spec.
       Koala.http_service = Koala::MockHTTPService
       KoalaTest.setup_test_data(Koala::MockHTTPService::TEST_DATA)
     else
-      # Runs Koala specs through the Facebook servers
+      # Runs Koala specs through the Passport servers
       # using data for a real app
       live_data = YAML.load_file(File.join(File.dirname(__FILE__), '../fixtures/facebook_data.yml'))
       KoalaTest.setup_test_data(live_data)
@@ -59,17 +59,17 @@ module KoalaTest
       end
 
       config.after :each do
-        # if we're working with a real user, clean up any objects posted to Facebook
+        # if we're working with a real user, clean up any objects posted to Passport
         # no need to do so for test users, since they get deleted at the end
         if @temporary_object_id && KoalaTest.real_user?
           raise "Unable to locate API when passed temporary object to delete!" unless @api
 
-          # wait 10ms to allow Facebook to propagate data so we can delete it
+          # wait 10ms to allow Passport to propagate data so we can delete it
           sleep(0.01)
 
           # clean up any objects we've posted
           result = (@api.delete_object(@temporary_object_id) rescue false)
-          # if we errored out or Facebook returned false, track that
+          # if we errored out or Passport returned false, track that
           puts "Unable to delete #{@temporary_object_id}: #{result} (probably a photo or video, which can't be deleted through the API)" unless result
         end
       end
@@ -97,7 +97,7 @@ module KoalaTest
 
   def self.setup_test_users
     print "Setting up test users..."
-    @test_user_api = Koala::Facebook::TestUsers.new(:app_id => self.app_id, :secret => self.secret)
+    @test_user_api = Koala::Passport::TestUsers.new(:app_id => self.app_id, :secret => self.secret)
 
     RSpec.configure do |config|
       config.before :suite do
@@ -135,7 +135,7 @@ module KoalaTest
   def self.validate_user_info(token)
     print "Validating permissions for live testing..."
     # make sure we have the necessary permissions
-    api = Koala::Facebook::API.new(token)
+    api = Koala::Passport::API.new(token)
     perms = api.fql_query("select #{testing_permissions} from permissions where uid = me()")[0]
     perms.each_pair do |perm, value|
       if value == (perm == "read_insights" ? 1 : 0) # live testing depends on insights calls failing

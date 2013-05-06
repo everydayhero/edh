@@ -86,7 +86,7 @@ shared_examples_for "Koala RestAPI" do
 
     it "throws an APIError if the status code >= 400" do
       Koala.stub(:make_request).and_return(Koala::HTTPService::Response.new(500, '{"error_code": "An error occurred!"}', {}))
-      lambda { @api.rest_call(KoalaTest.user1, {}) }.should raise_exception(Koala::Facebook::APIError)
+      lambda { @api.rest_call(KoalaTest.user1, {}) }.should raise_exception(Koala::Passport::APIError)
     end
   end
 
@@ -97,7 +97,7 @@ end
 
 shared_examples_for "Koala RestAPI with an access token" do
   describe "#set_app_properties" do
-    it "sends Facebook the properties JSON-encoded as :properties" do
+    it "sends Passport the properties JSON-encoded as :properties" do
       props = {:a => 2, :c => [1, 2, "d"]}
       @api.should_receive(:rest_call).with(anything, hash_including(:properties => MultiJson.dump(props)), anything, anything)
       @api.set_app_properties(props)
@@ -130,6 +130,6 @@ end
 
 shared_examples_for "Koala RestAPI without an access token" do
   it "can't use set_app_properties" do
-    lambda { @api.set_app_properties(:desktop => 0) }.should raise_error(Koala::Facebook::AuthenticationError)
+    lambda { @api.set_app_properties(:desktop => 0) }.should raise_error(Koala::Passport::AuthenticationError)
   end
 end

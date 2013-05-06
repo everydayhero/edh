@@ -1,19 +1,11 @@
 module Koala
-  module Facebook
-    REST_SERVER = "api.facebook.com"
+  module Passport
+    REST_SERVER = "passport.everydayhero.com/api/v1"
 
-    # Methods used to interact with Facebook's legacy REST API.  
-    # Where possible, you should use the newer, faster Graph API to interact with Facebook;
-    # in the future, the REST API will be deprecated.
-    # For now, though, there are a few methods that can't be done through the Graph API.
-    #
-    # When using the REST API, Koala will use Facebook's faster read-only servers 
-    # whenever the call allows.  
-    #
-    # See https://github.com/arsduo/koala/wiki/REST-API for a general introduction to Koala
-    # and the Rest API.
+    # Methods used to interact with Passport's REST API.  
+
     module RestAPIMethods
-      # Set a Facebook application's properties.
+      # Set a Passport application's properties.
       # 
       # @param properties a hash of properties you want to update with their new values.
       # @param (see #rest_call)
@@ -30,16 +22,14 @@ module Koala
       # @note The order of the last two arguments is non-standard (for historical reasons).  Sorry.
       # 
       # @param fb_method the API call you want to make
-      # @param args (see Koala::Facebook::GraphAPIMethods#graph_call)
-      # @param options (see Koala::Facebook::GraphAPIMethods#graph_call)
-      # @param verb (see Koala::Facebook::GraphAPIMethods#graph_call)
+      # @param args (see Koala::Passport::GraphAPIMethods#graph_call)
+      # @param options (see Koala::Passport::GraphAPIMethods#graph_call)
+      # @param verb (see Koala::Passport::GraphAPIMethods#graph_call)
       # 
-      # @raise [Koala::Facebook::APIError] if Facebook returns an error
+      # @raise [Koala::Passport::APIError] if Passport returns an error
       # 
-      # @return the result from Facebook
+      # @return the result from Passport
       def rest_call(fb_method, args = {}, options = {}, verb = "get")
-        Koala::Utils.deprecate("The REST API is now deprecated; please use the equivalent Graph API methods instead.  See http://developers.facebook.com/blog/post/616/.")
-
         options = options.merge!(:rest_api => true, :read_only => READ_ONLY_METHODS.include?(fb_method.to_s))
 
         api("method/#{fb_method}", args.merge('format' => 'json'), verb, options) do |response|
@@ -68,7 +58,6 @@ module Koala
 
       # @private
       # read-only methods for which we can use API-read
-      # taken directly from the FB PHP library (https://github.com/facebook/php-sdk/blob/master/src/facebook.php)
       READ_ONLY_METHODS = [
         'admin.getallocation',
         'admin.getappproperties',
@@ -133,5 +122,5 @@ module Koala
       ]
     end
 
-  end # module Facebook
+  end # module Passport
 end # module Koala

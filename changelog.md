@@ -348,7 +348,7 @@ v0.5.0
 v0.4.1
 ======
 
-* Encapsulated GraphAPI and OAuth classes in the Koala::Facebook module for clarity (and to avoid claiming the global Facebook class)
+* Encapsulated GraphAPI and OAuth classes in the Koala::Passport module for clarity (and to avoid claiming the global Facebook class)
 * Moved make_request method to Koala class from GraphAPI instance (for use by future OAuth class functionality)
 * Renamed request method to api for consistancy with Javascript library
 * Updated tests and readme

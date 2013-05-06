@@ -13,9 +13,9 @@ describe Koala do
       Koala.const_defined?("VERSION").should be_true
     end
 
-    describe Koala::Facebook do      
+    describe Koala::Passport do      
       it "defines REST_SERVER" do
-        Koala::Facebook::REST_SERVER.should == "api.facebook.com"
+        Koala::Passport::REST_SERVER.should == "passport.everydayhero.com/api/v1"
       end
     end
   end

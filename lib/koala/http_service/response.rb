@@ -3,7 +3,7 @@ module Koala
     class Response
       attr_reader :status, :body, :headers
 
-      # Creates a new Response object, which standardizes the response received by Facebook for use within Koala.
+      # Creates a new Response object, which standardizes the response received by Passport for use within Koala.
       def initialize(status, body, headers)
         @status = status
         @body = body

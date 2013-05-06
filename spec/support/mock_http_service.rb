@@ -46,7 +46,7 @@ module Koala
       else
         # Raises an error message with the place in the data YML
         # to place a mock as well as a URL to request from
-        # Facebook's servers for the actual data
+        # Passport's servers for the actual data
         # (Don't forget to replace ACCESS_TOKEN with a real access token)
         data_trace = [path, args, verb, options] * ': '
 
@@ -92,9 +92,6 @@ module Koala
         # ensure our args are all stringified
         value = if v.is_a?(String)
           should_json_decode?(v) ? MultiJson.load(v) : v
-        elsif v.is_a?(Koala::UploadableIO)
-          # obviously there are no files in the yaml
-          "[FILE]"
         else
           v
         end
@@ -109,7 +106,7 @@ module Koala
       args.empty? ? "no_args" : args
     end
 
-    # Facebook sometimes requires us to encode JSON values in an HTTP query
+    # Passport sometimes requires us to encode JSON values in an HTTP query
     # param. This complicates test matches, since we get into JSON-encoding
     # issues (what order keys are written into).  To avoid string comparisons
     # and the hacks required to make it work, we decode the query into a
