@@ -68,7 +68,7 @@ module Koala
 
     # For a given query, see if our mock responses YAML has a resopnse for it.
     def self.match_response(path, args, verb, options = {})
-      server = options[:rest_api] ? 'rest_api' : 'graph_api'
+      server = 'rest_api'
       path = 'root' if path == '' || path == '/'
       verb = (verb || 'get').to_s
       token = args.delete('access_token')

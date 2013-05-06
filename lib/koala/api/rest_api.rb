@@ -30,7 +30,7 @@ module Koala
       # 
       # @return the result from Passport
       def rest_call(fb_method, args = {}, options = {}, verb = "get")
-        options = options.merge!(:rest_api => true, :read_only => READ_ONLY_METHODS.include?(fb_method.to_s))
+        options = options.merge!(:read_only => READ_ONLY_METHODS.include?(fb_method.to_s))
 
         api("method/#{fb_method}", args.merge('format' => 'json'), verb, options) do |response|
           # check for REST API-specific errors

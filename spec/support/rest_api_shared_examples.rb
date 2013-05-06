@@ -13,17 +13,6 @@ shared_examples_for "Koala RestAPI" do
       @api.rest_call(method)
     end
 
-    it "always uses the rest api" do
-      @api.should_receive(:api).with(
-        anything,
-        anything,
-        anything,
-        hash_including(:rest_api => true)
-      )
-
-      @api.rest_call('anything')
-    end
-
     it "takes an optional hash of arguments" do
       args = {:arg1 => 'arg1'}
 
