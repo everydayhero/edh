@@ -78,10 +78,6 @@ shared_examples_for "Koala RestAPI" do
       lambda { @api.rest_call(KoalaTest.user1, {}) }.should raise_exception(Koala::Passport::APIError)
     end
   end
-
-  it "can use the beta tier" do
-    @api.rest_call("fql.query", {:query => "select first_name from user where uid = #{KoalaTest.user2_id}"}, :beta => true)
-  end
 end
 
 shared_examples_for "Koala RestAPI with an access token" do

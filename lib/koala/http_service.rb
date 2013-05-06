@@ -25,8 +25,6 @@ module Koala
     #
     # @param options various flags to indicate which server to use.
     # @option options :rest_api use the old REST API instead of the Graph API
-    # @option options :video use the server designated for video uploads
-    # @option options :beta use the beta tier
     # @option options :use_ssl force https, even if not needed
     #
     # @return a complete server address with protocol
