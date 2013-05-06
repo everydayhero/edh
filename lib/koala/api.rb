@@ -1,5 +1,4 @@
 # graph_batch_api and legacy are required at the bottom, since they depend on API being defined
-require 'koala/api/graph_api'
 require 'koala/api/rest_api'
 
 module Koala
@@ -15,7 +14,6 @@ module Koala
 
       attr_reader :access_token
 
-      include GraphAPIMethods
       include RestAPIMethods
 
       # Makes a request to the appropriate Facebook API.
@@ -95,6 +93,5 @@ module Koala
   end
 end
 
-require 'koala/api/graph_batch_api'
 # legacy support for old pre-1.2 API interfaces
 require 'koala/api/legacy'

@@ -14,10 +14,6 @@ describe Koala do
     end
 
     describe Koala::Facebook do      
-      it "defines GRAPH_SERVER" do
-        Koala::Facebook::GRAPH_SERVER.should == "graph.facebook.com"
-      end
-
       it "defines REST_SERVER" do
         Koala::Facebook::REST_SERVER.should == "api.facebook.com"
       end
