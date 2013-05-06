@@ -16,22 +16,15 @@ require 'koala/version'
 
 module Koala
   # A Ruby client library for the Passport Platform.
-  # See http://github.com/everydayhero/koala/wiki for a general introduction to Koala
-  # and the Graph API.
   
   # Making HTTP requests
   class << self
     # Control which HTTP service framework Koala uses. 
-    # Primarily used to switch between the mock-request framework used in testing
-    # and the live framework used in real life (and live testing).
-    # In theory, you could write your own HTTPService module if you need different functionality,
-    # but since the switch to {https://github.com/arsduo/koala/wiki/HTTP-Services Faraday} almost all such goals can be accomplished with middleware.
     attr_accessor :http_service
   end
 
   # @private
   # For current HTTPServices, switch the service as expected.
-  # For deprecated services (Typhoeus and Net::HTTP), print a warning and set the default Faraday adapter appropriately.
   def self.http_service=(service)
     if service.respond_to?(:deprecated_interface)
       # if this is a deprecated module, support the old interface
