@@ -17,10 +17,6 @@ describe Koala do
       it "defines REST_SERVER" do
         Koala::Facebook::REST_SERVER.should == "api.facebook.com"
       end
-      
-      it "defines DIALOG_HOST" do
-        Koala::Facebook::DIALOG_HOST.should == "www.facebook.com"
-      end
     end
   end
   

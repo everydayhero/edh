@@ -5,7 +5,6 @@ require 'multi_json'
 # include koala modules
 require 'koala/errors'
 require 'koala/api'
-require 'koala/oauth'
 require 'koala/test_users'
 
 # HTTP module so we can communicate with Facebook
