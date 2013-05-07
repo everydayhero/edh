@@ -1,6 +1,8 @@
 ####config/initializers
 #### defaults to using production
+```ruby
 $passport_client = Koala::Passport::API.new
+```
 
 ####optional access_token
 ```ruby

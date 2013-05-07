@@ -3,7 +3,7 @@ $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require 'koala/version'
 
 Gem::Specification.new do |gem|
-  gem.name        = "koala"
+  gem.name        = "edh-passport"
   gem.summary     = "A lightweight, flexible library for EDH Passport"
   gem.description = "A lightweight, flexible library for EDH Passport"
   gem.homepage    = "http://github.com/everydayhero/koala"
