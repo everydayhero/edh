@@ -8,11 +8,12 @@ module Koala
       # @param [String] access_token access token
       # @note If no access token is provided, you can only access some public information.
       # @return [Koala::Passport::API] the API client
-      def initialize(access_token = nil)
+      def initialize(access_token = nil, server = nil)
         @access_token = access_token
+        @server = server
       end
 
-      attr_reader :access_token
+      attr_accessor :access_token
 
       include RestAPIMethods
 
@@ -41,6 +42,7 @@ module Koala
         # This is explicitly needed in batch requests so GraphCollection
         # results preserve any specific access tokens provided
         args["access_token"] ||= @access_token || @app_access_token if @access_token || @app_access_token
+        options.merge!({:server => @server}) unless @server.nil?
 
         # Translate any arrays in the params into comma-separated strings
         args = sanitize_request_parameters(args)

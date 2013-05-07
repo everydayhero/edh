@@ -5,6 +5,18 @@ module Koala
     # Methods used to interact with Passport's REST API.  
 
     module RestAPIMethods
+      #convenience methods
+      def create pp_method, args = {}, options = {}
+        rest_call("me/#{pp_method}", args, options, :post)
+      end
+
+      def delete pp_action_uid, args = {}, options = {}
+        rest_call("actions/#{pp_action_uid}", args, options, :delete)
+      end
+
+      def update pp_action_uid, args = {}, options = {}
+        rest_call("actions/#{pp_action_uid}", args, options, :put)
+      end
 
       # Make a call to the REST API. 
       #
@@ -16,7 +28,7 @@ module Koala
       # 
       # @return the result from Passport
       def rest_call(pp_method, args = {}, options = {}, verb = "get")
-        api("method/#{pp_method}", args.merge('format' => 'json'), verb, options) do |response|
+        api("#{pp_method}", args.merge('format' => 'json'), verb, options) do |response|
           # check for REST API-specific errors
           if response.status >= 400
             begin

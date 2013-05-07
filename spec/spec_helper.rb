@@ -1,7 +1,6 @@
 if RUBY_VERSION == '1.9.2' && RUBY_PATCHLEVEL < 290 && RUBY_ENGINE != "macruby"
   # In Ruby 1.9.2 versions before patchlevel 290, the default Psych
   # parser has an issue with YAML merge keys, which
-  # fixtures/mock_facebook_responses.yml relies heavily on.
   #
   # Anyone using an earlier version will see missing mock response
   # errors when running the test suite similar to this:

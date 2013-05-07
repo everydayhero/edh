@@ -3,7 +3,7 @@ module KoalaTest
 
   class << self
     attr_accessor :oauth_token, :app_id, :secret, :app_access_token, :code, :session_key
-    attr_accessor :oauth_test_data, :subscription_test_data, :search_time
+    attr_accessor :search_time
     attr_accessor :test_user_api
   end
 
@@ -25,8 +25,6 @@ module KoalaTest
     else
       # Runs Koala specs through the Passport servers
       # using data for a real app
-      live_data = YAML.load_file(File.join(File.dirname(__FILE__), '../fixtures/facebook_data.yml'))
-      KoalaTest.setup_test_data(live_data)
 
       # allow live tests with different adapters
       adapter = ENV['ADAPTER'] || "typhoeus" # use Typhoeus by default if available
@@ -75,16 +73,6 @@ module KoalaTest
   end
 
   def self.setup_test_data(data)
-    # make data accessible to all our tests
-    self.oauth_test_data = data["oauth_test_data"]
-    self.subscription_test_data = data["subscription_test_data"]
-    self.oauth_token = data["oauth_token"]
-    self.app_id = data["oauth_test_data"]["app_id"].to_s
-    self.app_access_token = data["oauth_test_data"]["app_access_token"]
-    self.secret = data["oauth_test_data"]["secret"]
-    self.code = data["oauth_test_data"]["code"]
-    self.session_key = data["oauth_test_data"]["session_key"]
-
     # fix the search time so it can be used in the mock responses
     self.search_time = data["search_time"] || (Time.now - 3600).to_s
   end

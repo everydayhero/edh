@@ -4,13 +4,46 @@ shared_examples_for "Koala RestAPI" do
     it "uses the proper path" do
       method = stub('methodName')
       @api.should_receive(:api).with(
-        "method/#{method}",
+        "#{method}",
         anything,
         anything,
         anything
       )
 
       @api.rest_call(method)
+    end
+
+    it "uses the proper path for delete" do
+      @api.should_receive(:api).with(
+        "actions/1234",
+        anything,
+        :delete,
+        anything
+      )
+
+      @api.delete(1234)
+    end
+
+    it "uses the proper path for update" do
+      @api.should_receive(:api).with(
+        "actions/1234",
+        anything,
+        :put,
+        anything
+      )
+
+      @api.update(1234)
+    end
+
+    it "uses the proper path for create" do
+      @api.should_receive(:api).with(
+        "me/pages.fundraise",
+        anything,
+        :post,
+        anything
+      )
+
+      @api.create("pages.fundraise", {:abc => "def"})
     end
 
     it "takes an optional hash of arguments" do

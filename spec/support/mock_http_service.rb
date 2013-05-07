@@ -15,26 +15,10 @@ module Koala
     OAUTH_CODE = 'OAUTHCODE'
 
     # Loads testing data
-    TEST_DATA = YAML.load_file(File.join(File.dirname(__FILE__), '..', 'fixtures', 'facebook_data.yml'))
-    TEST_DATA.merge!('oauth_token' => Koala::MockHTTPService::ACCESS_TOKEN)
-    TEST_DATA['oauth_test_data'].merge!('code' => Koala::MockHTTPService::OAUTH_CODE)
+    TEST_DATA = {}
     TEST_DATA['search_time'] = (Time.now - 3600).to_s
 
-    # Useful in mock_facebook_responses.yml
-    OAUTH_DATA = TEST_DATA['oauth_test_data']
-    OAUTH_DATA.merge!({
-      'app_access_token' => APP_ACCESS_TOKEN,
-      'session_key' => "session_key",
-      'multiple_session_keys' => ["session_key", "session_key_2"]
-    })
-    APP_ID = OAUTH_DATA['app_id']
-    SECRET = OAUTH_DATA['secret']
-    SUBSCRIPTION_DATA = TEST_DATA["subscription_test_data"]
-
-    # Loads the mock response data via ERB to substitue values for TEST_DATA (see oauth/access_token)
-    mock_response_file_path = File.join(File.dirname(__FILE__), '..', 'fixtures', 'mock_facebook_responses.yml')
-    RESPONSES = YAML.load(ERB.new(IO.read(mock_response_file_path)).result(binding))
-
+    RESPONSES = {}
     def self.make_request(path, args, verb, options = {})
       if response = match_response(path, args, verb, options)
         # create response class object

@@ -29,8 +29,12 @@ module Koala
     #
     # @return a complete server address with protocol
     def self.server(options = {})
-      server = Passport::REST_SERVER
-      "#{options[:use_ssl] ? "https" : "http"}://#{server}"
+      if options[:server]
+        options[:server]
+      else
+        server = Passport::REST_SERVER
+        "#{options[:use_ssl] ? "https" : "http"}://#{server}"
+      end
     end
 
     # Makes a request directly to Passport.
@@ -58,7 +62,6 @@ module Koala
 
       # figure out our options for this request
       request_options = {:params => (verb == "get" ? params : {})}.merge(http_options || {}).merge(process_options(options))
-      request_options[:use_ssl] = true if args["access_token"] # require https if there's a token
       if request_options[:use_ssl]
         ssl = (request_options[:ssl] ||= {})
         ssl[:verify] = true unless ssl.has_key?(:verify)
