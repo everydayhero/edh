@@ -1,4 +1,4 @@
-module KoalaTest
+module EDHTest
   # directly taken from Rails 3.1's OrderedHash
   # see https://github.com/rails/rails/blob/master/activesupport/lib/active_support/ordered_hash.rb
 

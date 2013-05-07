@@ -1,10 +1,9 @@
 require 'faraday'
 
-module Koala  
+module EDH  
   module HTTPService
     class MultipartRequest < Faraday::Request::Multipart
       # Passport expects nested parameters to be passed in a certain way
-      # Based on our testing (https://github.com/arsduo/koala/issues/125),
       # Faraday needs two changes to make that work:
       # 1) [] need to be escaped (e.g. params[foo]=bar ==> params%5Bfoo%5D=bar)
       # 2) such messages need to be multipart-encoded
@@ -36,6 +35,6 @@ module Koala
   end
   
   # @private
-  # legacy support for when MultipartRequest lived directly under Koala
+  # legacy support for when MultipartRequest lived directly under EDH
   MultipartRequest = HTTPService::MultipartRequest  
 end

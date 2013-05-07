@@ -1,51 +1,51 @@
 require 'spec_helper'
 
-describe Koala do
+describe EDH do
 
   
   it "has an http_service accessor" do
-    Koala.should respond_to(:http_service)
-    Koala.should respond_to(:http_service=)
+    EDH.should respond_to(:http_service)
+    EDH.should respond_to(:http_service=)
   end
   
   describe "constants" do
     it "has a version" do
-      Koala.const_defined?("VERSION").should be_true
+      EDH.const_defined?("VERSION").should be_true
     end
 
-    describe Koala::Passport do      
+    describe EDH::Passport do      
       it "defines REST_SERVER" do
-        Koala::Passport::REST_SERVER.should == "passport.everydayhero.com/api/v1"
+        EDH::Passport::REST_SERVER.should == "passport.everydayhero.com/api/v1"
       end
     end
   end
   
   context "for deprecated services" do
     before :each do
-      @service = Koala.http_service
+      @service = EDH.http_service
     end
     
     after :each do
-      Koala.http_service = @service
+      EDH.http_service = @service
     end
 
     it "invokes deprecated_interface if present" do
       mock_service = stub("http service")
       mock_service.should_receive(:deprecated_interface)
-      Koala.http_service = mock_service
+      EDH.http_service = mock_service
     end
     
     it "does not set the service if it's deprecated" do
       mock_service = stub("http service")
       mock_service.stub(:deprecated_interface)
-      Koala.http_service = mock_service
-      Koala.http_service.should == @service
+      EDH.http_service = mock_service
+      EDH.http_service.should == @service
     end
 
     it "sets the service if it's not deprecated" do
       mock_service = stub("http service")
-      Koala.http_service = mock_service
-      Koala.http_service.should == mock_service
+      EDH.http_service = mock_service
+      EDH.http_service.should == mock_service
     end
   end
 
@@ -56,8 +56,8 @@ describe Koala do
       verb = "get"
       options = {:c => :d}
       
-      Koala.http_service.should_receive(:make_request).with(path, args, verb, options)
-      Koala.make_request(path, args, verb, options)
+      EDH.http_service.should_receive(:make_request).with(path, args, verb, options)
+      EDH.make_request(path, args, verb, options)
     end
   end
 

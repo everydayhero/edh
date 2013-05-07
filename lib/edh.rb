@@ -2,24 +2,24 @@
 require 'digest/md5'
 require 'multi_json'
 
-# include koala modules
-require 'koala/errors'
-require 'koala/api'
-require 'koala/test_users'
+# include edh modules
+require 'edh/errors'
+require 'edh/api'
+require 'edh/test_users'
 
 # HTTP module so we can communicate with Passport
-require 'koala/http_service'
+require 'edh/http_service'
 
 # miscellaneous
-require 'koala/utils'
-require 'koala/version'
+require 'edh/utils'
+require 'edh/version'
 
-module Koala
+module EDH
   # A Ruby client library for the Passport Platform.
   
   # Making HTTP requests
   class << self
-    # Control which HTTP service framework Koala uses. 
+    # Control which HTTP service framework EDH uses. 
     attr_accessor :http_service
   end
 
@@ -37,7 +37,7 @@ module Koala
     end
   end
 
-  # An convenenient alias to Koala.http_service.make_request. 
+  # An convenenient alias to EDH.http_service.make_request. 
   def self.make_request(path, args, verb, options = {})
     http_service.make_request(path, args, verb, options)
   end

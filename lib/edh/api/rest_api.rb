@@ -1,4 +1,4 @@
-module Koala
+module EDH
   module Passport
     REST_SERVER = "passport.everydayhero.com/api/v1"
 
@@ -24,10 +24,11 @@ module Koala
       # 
       # @param pp_method the API call you want to make
       # 
-      # @raise [Koala::Passport::APIError] if Passport returns an error
+      # @raise [EDH::Passport::APIError] if Passport returns an error
       # 
       # @return the result from Passport
       def rest_call(pp_method, args = {}, options = {}, verb = "get")
+        args = MultiJson.load(args) if args.is_a?(String)
         api("#{pp_method}", args.merge('format' => 'json'), verb, options) do |response|
           # check for REST API-specific errors
           if response.status >= 400
@@ -54,4 +55,4 @@ module Koala
     end
 
   end # module Passport
-end # module Koala
+end # module EDH

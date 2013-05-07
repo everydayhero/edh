@@ -1,5 +1,5 @@
 # small helper method for live testing
-module KoalaTest
+module EDHTest
 
   class << self
     attr_accessor :oauth_token, :app_id, :secret, :app_access_token, :code, :session_key
@@ -13,17 +13,17 @@ module KoalaTest
     setup_rspec
 
     unless ENV['LIVE']
-      # By default the Koala specs are run using stubs for HTTP requests,
+      # By default the EDH specs are run using stubs for HTTP requests,
       # so they won't fail due to Passport-imposed rate limits or server timeouts.
       #
       # However as a result they are more brittle since
       # we are not testing the latest responses from the Passport servers.
       # To be certain all specs pass with the current Passport services,
       # run LIVE=true bundle exec rake spec.
-      Koala.http_service = Koala::MockHTTPService
-      KoalaTest.setup_test_data(Koala::MockHTTPService::TEST_DATA)
+      EDH.http_service = EDH::MockHTTPService
+      EDHTest.setup_test_data(EDH::MockHTTPService::TEST_DATA)
     else
-      # Runs Koala specs through the Passport servers
+      # Runs EDH specs through the Passport servers
       # using data for a real app
 
       # allow live tests with different adapters
@@ -37,10 +37,10 @@ module KoalaTest
       end
 
       # use a test user unless the developer wants to test against a real profile
-      unless token = KoalaTest.oauth_token
-        KoalaTest.setup_test_users
+      unless token = EDHTest.oauth_token
+        EDHTest.setup_test_users
       else
-        KoalaTest.validate_user_info(token)
+        EDHTest.validate_user_info(token)
       end
     end
   end
@@ -50,14 +50,14 @@ module KoalaTest
     # set the token up for
     RSpec.configure do |config|
       config.before :each do
-        @token = KoalaTest.oauth_token
-        Koala::Utils.stub(:deprecate) # never fire deprecation warnings
+        @token = EDHTest.oauth_token
+        EDH::Utils.stub(:deprecate) # never fire deprecation warnings
       end
 
       config.after :each do
         # if we're working with a real user, clean up any objects posted to Passport
         # no need to do so for test users, since they get deleted at the end
-        if @temporary_object_id && KoalaTest.real_user?
+        if @temporary_object_id && EDHTest.real_user?
           raise "Unable to locate API when passed temporary object to delete!" unless @api
 
           # wait 10ms to allow Passport to propagate data so we can delete it
@@ -83,17 +83,17 @@ module KoalaTest
 
   def self.setup_test_users
     print "Setting up test users..."
-    @test_user_api = Koala::Passport::TestUsers.new(:app_id => self.app_id, :secret => self.secret)
+    @test_user_api = EDH::Passport::TestUsers.new(:app_id => self.app_id, :secret => self.secret)
 
     RSpec.configure do |config|
       config.before :suite do
         # before each test module, create two test users with specific names and befriend them
-        KoalaTest.create_test_users
+        EDHTest.create_test_users
       end
 
       config.after :suite do
         # after each test module, delete the test users to avoid cluttering up the application
-        KoalaTest.destroy_test_users
+        EDHTest.destroy_test_users
       end
     end
 
@@ -102,8 +102,8 @@ module KoalaTest
 
   def self.create_test_users
     begin
-      @live_testing_user = @test_user_api.create(true, KoalaTest.testing_permissions, :name => KoalaTest.user1_name)
-      @live_testing_friend = @test_user_api.create(true, KoalaTest.testing_permissions, :name => KoalaTest.user2_name)
+      @live_testing_user = @test_user_api.create(true, EDHTest.testing_permissions, :name => EDHTest.user1_name)
+      @live_testing_friend = @test_user_api.create(true, EDHTest.testing_permissions, :name => EDHTest.user2_name)
       @test_user_api.befriend(@live_testing_user, @live_testing_friend)
       self.oauth_token = @live_testing_user["access_token"]
     rescue Exception => e
@@ -121,7 +121,7 @@ module KoalaTest
   def self.validate_user_info(token)
     print "Validating permissions for live testing..."
     # make sure we have the necessary permissions
-    api = Koala::Passport::API.new(token)
+    api = EDH::Passport::API.new(token)
     perms = api.fql_query("select #{testing_permissions} from permissions where uid = me()")[0]
     perms.each_pair do |perm, value|
       if value == (perm == "read_insights" ? 1 : 0) # live testing depends on insights calls failing
@@ -142,7 +142,7 @@ module KoalaTest
   end
 
   def self.mock_interface?
-    Koala.http_service == Koala::MockHTTPService
+    EDH.http_service == EDH::MockHTTPService
   end
 
   # Data for testing
@@ -180,6 +180,6 @@ module KoalaTest
   end
 
   def self.app_properties
-    mock_interface? ? {"desktop" => 0} : {"description" => "A test framework for Koala and its users.  (#{rand(10000).to_i})"}
+    mock_interface? ? {"desktop" => 0} : {"description" => "A test framework for EDH and its users.  (#{rand(10000).to_i})"}
   end
 end

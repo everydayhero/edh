@@ -1,13 +1,13 @@
 # graph_batch_api and legacy are required at the bottom, since they depend on API being defined
-require 'koala/api/rest_api'
+require 'edh/api/rest_api'
 
-module Koala
+module EDH
   module Passport
     class API
       # Creates a new API client.
       # @param [String] access_token access token
       # @note If no access token is provided, you can only access some public information.
-      # @return [Koala::Passport::API] the API client
+      # @return [EDH::Passport::API] the API client
       def initialize(access_token = nil, server = nil)
         @access_token = access_token
         @server = server
@@ -25,8 +25,7 @@ module Koala
       # @param path the server path for this request (leading / is prepended if not present)
       # @param args arguments to be sent to Passport
       # @param verb the HTTP method to use
-      # @param options request-related options for Koala and Faraday.
-      #                See https://github.com/arsduo/koala/wiki/HTTP-Services for additional options.
+      # @param options request-related options for EDH and Faraday.
       # @option options [Symbol] :http_component which part of the response (headers, body, or status) to return
       # @option options [Boolean] :use_ssl force SSL for this request, even if it's tokenless.
       #                                    (All API requests with access tokens use SSL.)
@@ -34,7 +33,7 @@ module Koala
       #
       # @yield The response for evaluation
       #
-      # @raise [Koala::Passport::ServerError] if Passport returns an error (response status >= 500)
+      # @raise [EDH::Passport::ServerError] if Passport returns an error (response status >= 500)
       #
       # @return the body of the response from Passport (unless another http_component is requested)
       def api(path, args = {}, verb = "get", options = {}, &error_checking_block)
@@ -51,10 +50,10 @@ module Koala
         path = "/#{path}" unless path =~ /^\//
 
         # make the request via the provided service
-        result = Koala.make_request(path, args, verb, options)
+        result = EDH.make_request(path, args, verb, options)
 
         if result.status.to_i >= 500
-          raise Koala::Passport::ServerError.new(result.status.to_i, result.body)
+          raise EDH::Passport::ServerError.new(result.status.to_i, result.body)
         end
 
         yield result if error_checking_block

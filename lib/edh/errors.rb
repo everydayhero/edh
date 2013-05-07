@@ -1,10 +1,10 @@
-module Koala
+module EDH
 
-  class KoalaError < StandardError; end
+  class EDHError < StandardError; end
 
   module Passport
 
-    class APIError < ::Koala::KoalaError
+    class APIError < ::EDH::EDHError
       attr_accessor :pp_error_type, :pp_error_code, :pp_error_subcode, :pp_error_message,
                     :http_status, :response_body
 

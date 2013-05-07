@@ -17,11 +17,11 @@ if RUBY_VERSION == '1.9.2' && RUBY_PATCHLEVEL < 290 && RUBY_ENGINE != "macruby"
 end
 
 # load the library
-require 'koala'
+require 'edh'
 
 # Support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 # set up our testing environment
 # load testing data and (if needed) create test users or validate real users
-KoalaTest.setup_test_environment!
+EDHTest.setup_test_environment!

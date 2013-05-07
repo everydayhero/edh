@@ -1,4 +1,4 @@
-shared_examples_for "Koala RestAPI" do
+shared_examples_for "EDH RestAPI" do
   # REST_CALL
   describe "when making a rest request" do
     it "uses the proper path" do
@@ -107,8 +107,8 @@ shared_examples_for "Koala RestAPI" do
     end
 
     it "throws an APIError if the status code >= 400" do
-      Koala.stub(:make_request).and_return(Koala::HTTPService::Response.new(500, '{"error_code": "An error occurred!"}', {}))
-      lambda { @api.rest_call(KoalaTest.user1, {}) }.should raise_exception(Koala::Passport::APIError)
+      EDH.stub(:make_request).and_return(EDH::HTTPService::Response.new(500, '{"error_code": "An error occurred!"}', {}))
+      lambda { @api.rest_call(EDHTest.user1, {}) }.should raise_exception(EDH::Passport::APIError)
     end
   end
 end

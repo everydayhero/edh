@@ -1,14 +1,14 @@
 require 'erb'
 require 'yaml'
 
-module Koala
+module EDH
   module MockHTTPService
-    include Koala::HTTPService
+    include EDH::HTTPService
 
     # fix our specs to use ok_json, so we always get the same results from to_json
     MultiJson.use :ok_json
 
-    # Mocks all HTTP requests for with koala_spec_with_mocks.rb
+    # Mocks all HTTP requests for with edh_spec_with_mocks.rb
     # Mocked values to be included in TEST_DATA used in specs
     ACCESS_TOKEN = '*'
     APP_ACCESS_TOKEN = "**"
@@ -23,9 +23,9 @@ module Koala
       if response = match_response(path, args, verb, options)
         # create response class object
         response_object = if response.is_a? String
-          Koala::HTTPService::Response.new(200, response, {})
+          EDH::HTTPService::Response.new(200, response, {})
         else
-          Koala::HTTPService::Response.new(response["code"] || 200, response["body"] || "", response["headers"] || {})
+          EDH::HTTPService::Response.new(response["code"] || 200, response["body"] || "", response["headers"] || {})
         end
       else
         # Raises an error message with the place in the data YML

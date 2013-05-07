@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
-require 'koala/version'
+require 'edh/version'
 
 Gem::Specification.new do |gem|
-  gem.name        = "edh-passport"
+  gem.name        = "edh"
   gem.summary     = "A lightweight, flexible library for EDH Passport"
   gem.description = "A lightweight, flexible library for EDH Passport"
-  gem.homepage    = "http://github.com/everydayhero/koala"
-  gem.version     = Koala::VERSION
+  gem.homepage    = "http://github.com/everydayhero/edh"
+  gem.version     = EDH::VERSION
 
   gem.authors     = ["Alex Koppel", "Joel Richards"]
   gem.email       = "joelr@everydayhero.com.au"
@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
   gem.executables    = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
 
   gem.extra_rdoc_files = ["readme.md", "changelog.md"]
-  gem.rdoc_options     = ["--line-numbers", "--inline-source", "--title", "Koala"]
+  gem.rdoc_options     = ["--line-numbers", "--inline-source", "--title", "EDH"]
 
   gem.add_runtime_dependency("multi_json")
   gem.add_runtime_dependency("faraday")

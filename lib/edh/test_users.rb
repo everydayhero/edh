@@ -1,13 +1,13 @@
-require 'koala'
+require 'edh'
 
-module Koala
+module EDH
   module Passport
     
     # Create and manage test users for your application.  
     # A test user is a user account associated with an app created for the purpose 
     # of testing the functionality of that app. 
     # You can use test users for manual or automated testing -- 
-    # Koala's live test suite uses test users to verify the library works with Passport.
+    # EDH's live test suite uses test users to verify the library works with Passport.
     #
     # @note the test user API is fairly slow compared to other interfaces
     #       (which makes sense -- it's creating whole new user accounts!).
@@ -15,13 +15,13 @@ module Koala
     class TestUsers
 
       # The application API interface used to communicate with Passport. 
-      # @return [Koala::Passport::API] 
+      # @return [EDH::Passport::API] 
       attr_reader :api
       attr_reader :app_id, :app_access_token, :secret
       
       # Create a new TestUsers instance.  
       # If you don't have your app's access token, provide the app's secret and 
-      # Koala will make a request to Passport for the appropriate token.
+      # EDH will make a request to Passport for the appropriate token.
       # 
       # @param options initialization options.
       # @option options :app_id the application's ID.
@@ -39,7 +39,7 @@ module Koala
 
         # fetch the access token if we're provided a secret
         if @secret && !@app_access_token
-          oauth = Koala::Passport::OAuth.new(@app_id, @secret)
+          oauth = EDH::Passport::OAuth.new(@app_id, @secret)
           @app_access_token = oauth.get_app_access_token
         end
         
@@ -51,7 +51,7 @@ module Koala
       # @param installed whether the user has installed your app
       # @param permissions a comma-separated string or array of permissions the user has granted (if installed)
       # @param args any additional arguments for the create call (name, etc.)
-      # @param options (see Koala::Passport::API#api)
+      # @param options (see EDH::Passport::API#api)
       #
       # @return a hash of information for the new user (id, access token, login URL, etc.)
       def create(installed, permissions = nil, args = {}, options = {})
@@ -63,7 +63,7 @@ module Koala
 
       # List all test users for the app.
       #
-      # @param options (see Koala::Passport::API#api)
+      # @param options (see EDH::Passport::API#api)
       #
       # @return an array of hashes of user information (id, access token, etc.)
       def list(options = {})
@@ -73,9 +73,9 @@ module Koala
       # Delete a test user.
       #
       # @param test_user the user to delete; can be either a Passport ID or the hash returned by {#create}
-      # @param options (see Koala::Passport::API#api)
+      # @param options (see EDH::Passport::API#api)
       #
-      # @return true if successful, false (or an {Koala::Passport::APIError APIError}) if not
+      # @return true if successful, false (or an {EDH::Passport::APIError APIError}) if not
       def delete(test_user, options = {})
         test_user = test_user["id"] if test_user.is_a?(Hash)
         @api.delete_object(test_user, options)
@@ -85,7 +85,7 @@ module Koala
       # 
       # @note if you have a lot of test users (> 20), this operation can take a long time.
       #
-      # @param options (see Koala::Passport::API#api)
+      # @param options (see EDH::Passport::API#api)
       # 
       # @return a list of the test users that have been deleted
       def delete_all(options = {})
@@ -110,9 +110,9 @@ module Koala
       #
       # @param test_user the user to update; can be either a Facebook ID or the hash returned by {#create}
       # @param args the updates to make
-      # @param options (see Koala::Passport::API#api)
+      # @param options (see EDH::Passport::API#api)
       #
-      # @return true if successful, false (or an {Koala::Passport::APIError APIError}) if not
+      # @return true if successful, false (or an {EDH::Passport::APIError APIError}) if not
       def update(test_user, args = {}, options = {})
         test_user = test_user["id"] if test_user.is_a?(Hash)
         @api.graph_call(test_user, args, "post", options)
@@ -124,9 +124,9 @@ module Koala
       #
       # @param user1_hash one of the users to friend; the hash must contain both ID and access token (as returned by {#create})
       # @param user2_hash the other user to friend
-      # @param options (see Koala::Passport::API#api)
+      # @param options (see EDH::Passport::API#api)
       #
-      # @return true if successful, false (or an {Koala::Passport::APIError APIError}) if not
+      # @return true if successful, false (or an {EDH::Passport::APIError APIError}) if not
       def befriend(user1_hash, user2_hash, options = {})
         user1_id = user1_hash["id"] || user1_hash[:id]
         user2_id = user2_hash["id"] || user2_hash[:id]
@@ -155,7 +155,7 @@ module Koala
       # @param network_size how many users to create
       # @param installed whether the users have installed your app (see {#create})
       # @param permissions what permissions the users have granted (see {#create})
-      # @param options (see Koala::Passport::API#api)
+      # @param options (see EDH::Passport::API#api)
       #
       # @return the list of users created
       def create_network(network_size, installed = true, permissions = '', options = {})
@@ -180,9 +180,9 @@ module Koala
       # @private
       # Legacy accessor for before GraphAPI was unified into API
       def graph_api
-        Koala::Utils.deprecate("the TestUsers.graph_api accessor is deprecated and will be removed in a future version; please use .api instead.")
+        EDH::Utils.deprecate("the TestUsers.graph_api accessor is deprecated and will be removed in a future version; please use .api instead.")
         @api
       end
     end # TestUserMethods
   end # Passport
-end # Koala
+end # EDH

@@ -1,3 +1,3 @@
-module Koala
+module EDH
   VERSION = "0.1"
 end

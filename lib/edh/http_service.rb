@@ -1,8 +1,8 @@
 require 'faraday'
-require 'koala/http_service/multipart_request'
-require 'koala/http_service/response'
+require 'edh/http_service/multipart_request'
+require 'edh/http_service/response'
 
-module Koala
+module EDH
   module HTTPService
     class << self
       # A customized stack of Faraday middleware that will be used to make each request.
@@ -12,11 +12,11 @@ module Koala
 
     @http_options ||= {}
 
-    # Koala's default middleware stack.
+    # EDH's default middleware stack.
     # We encode requests in a Passport-compatible multipart request,
     # and use whichever adapter has been configured for this application.
     DEFAULT_MIDDLEWARE = Proc.new do |builder|
-      builder.use Koala::HTTPService::MultipartRequest
+      builder.use EDH::HTTPService::MultipartRequest
       builder.request :url_encoded
       builder.adapter Faraday.default_adapter
     end
@@ -40,19 +40,19 @@ module Koala
     # Makes a request directly to Passport.
     # @note You'll rarely need to call this method directly.
     #
-    # @see Koala::Passport::API#api
-    # @see Koala::Passport::RestAPIMethods#rest_call
+    # @see EDH::Passport::API#api
+    # @see EDH::Passport::RestAPIMethods#rest_call
     #
     # @param path the server path for this request
-    # @param args (see Koala::Passport::API#api)
+    # @param args (see EDH::Passport::API#api)
     # @param verb the HTTP method to use.
     #             If not get or post, this will be turned into a POST request with the appropriate :method
     #             specified in the arguments.
-    # @param options (see Koala::Passport::API#api)
+    # @param options (see EDH::Passport::API#api)
     #
     # @raise an appropriate connection error if unable to make the request to Passport
     #
-    # @return [Koala::HTTPService::Response] a response object representing the results from Passport
+    # @return [EDH::HTTPService::Response] a response object representing the results from Passport
     def self.make_request(path, args, verb, options = {})
       # if the verb isn't get or post, send it as a post argument
       args.merge!({:method => verb}) && verb = "post" if verb != "get" && verb != "post"
@@ -74,8 +74,8 @@ module Koala
       response = conn.send(verb, path, (verb == "post" ? params : {}))
 
       # Log URL information
-      Koala::Utils.debug "#{verb.upcase}: #{path} params: #{params.inspect}"
-      Koala::HTTPService::Response.new(response.status.to_i, response.body, response.headers)
+      EDH::Utils.debug "#{verb.upcase}: #{path} params: #{params.inspect}"
+      EDH::HTTPService::Response.new(response.status.to_i, response.body, response.headers)
     end
 
     # Encodes a given hash into a query string.
@@ -84,7 +84,7 @@ module Koala
     # @param params_hash a hash of values to CGI-encode and appropriately join
     #
     # @example
-    #   Koala.http_service.encode_params({:a => 2, :b => "My String"})
+    #   EDH.http_service.encode_params({:a => 2, :b => "My String"})
     #   => "a=2&b=My+String"
     #
     # @return the appropriately-encoded string
@@ -99,22 +99,22 @@ module Koala
 
     def self.process_options(options)
       if typhoeus_options = options.delete(:typhoeus_options)
-        Koala::Utils.deprecate("typhoeus_options should now be included directly in the http_options hash.  Support for this key will be removed in a future version.")
+        EDH::Utils.deprecate("typhoeus_options should now be included directly in the http_options hash.  Support for this key will be removed in a future version.")
         options = options.merge(typhoeus_options)
       end
 
       if ca_file = options.delete(:ca_file)
-        Koala::Utils.deprecate("http_options[:ca_file] should now be passed inside (http_options[:ssl] = {}) -- that is, http_options[:ssl][:ca_file].  Support for this key will be removed in a future version.")
+        EDH::Utils.deprecate("http_options[:ca_file] should now be passed inside (http_options[:ssl] = {}) -- that is, http_options[:ssl][:ca_file].  Support for this key will be removed in a future version.")
         (options[:ssl] ||= {})[:ca_file] = ca_file
       end
 
       if ca_path = options.delete(:ca_path)
-        Koala::Utils.deprecate("http_options[:ca_path] should now be passed inside (http_options[:ssl] = {}) -- that is, http_options[:ssl][:ca_path].  Support for this key will be removed in a future version.")
+        EDH::Utils.deprecate("http_options[:ca_path] should now be passed inside (http_options[:ssl] = {}) -- that is, http_options[:ssl][:ca_path].  Support for this key will be removed in a future version.")
         (options[:ssl] ||= {})[:ca_path] = ca_path
       end
 
       if verify_mode = options.delete(:verify_mode)
-        Koala::Utils.deprecate("http_options[:verify_mode] should now be passed inside (http_options[:ssl] = {}) -- that is, http_options[:ssl][:verify_mode].  Support for this key will be removed in a future version.")
+        EDH::Utils.deprecate("http_options[:verify_mode] should now be passed inside (http_options[:ssl] = {}) -- that is, http_options[:ssl][:verify_mode].  Support for this key will be removed in a future version.")
         (options[:ssl] ||= {})[:verify_mode] = verify_mode
       end
 
@@ -126,7 +126,7 @@ module Koala
   module TyphoeusService
     def self.deprecated_interface
       # support old-style interface with a warning
-      Koala::Utils.deprecate("the TyphoeusService module is deprecated; to use Typhoeus, set Faraday.default_adapter = :typhoeus.  Enabling Typhoeus for all Faraday connections.")
+      EDH::Utils.deprecate("the TyphoeusService module is deprecated; to use Typhoeus, set Faraday.default_adapter = :typhoeus.  Enabling Typhoeus for all Faraday connections.")
       Faraday.default_adapter = :typhoeus
     end
   end
@@ -135,7 +135,7 @@ module Koala
   module NetHTTPService
     def self.deprecated_interface
       # support old-style interface with a warning
-      Koala::Utils.deprecate("the NetHTTPService module is deprecated; to use Net::HTTP, set Faraday.default_adapter = :net_http.  Enabling Net::HTTP for all Faraday connections.")
+      EDH::Utils.deprecate("the NetHTTPService module is deprecated; to use Net::HTTP, set Faraday.default_adapter = :net_http.  Enabling Net::HTTP for all Faraday connections.")
       Faraday.default_adapter = :net_http
     end
   end
