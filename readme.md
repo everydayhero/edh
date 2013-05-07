@@ -36,12 +36,3 @@ Unit tests are provided for all of Koala's methods.  By default, these tests run
 # From anywhere in the project directory:
 bundle exec rake spec
 ```
-
-You can also run live tests against Facebook's servers:
-```bash
-# Again from anywhere in the project directory:
-LIVE=true bundle exec rake spec
-# you can also test against Facebook's beta tier
-LIVE=true BETA=true bundle exec rake spec
-```
-By default, the live tests are run against test users, so you can run them as frequently as you want.  If you want to run them against a real user, however, you can fill in the OAuth token, code, and access\_token values in spec/fixtures/facebook_data.yml.  See the wiki for more details.
