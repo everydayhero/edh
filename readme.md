@@ -6,7 +6,8 @@ $passport_client = EDH::Passport::API.new
 
 ####optional 
 ```ruby
-options: app_token, server, access_token (user)
+#options: app_token, server, access_token (user)
+#access_token is used for sending requests first, then falls back to app_token if that exists.
 $passport_client = EDH::Passport::API.new(:server => "http://dummy-passport.dev")
 ```
 ####set the user token
