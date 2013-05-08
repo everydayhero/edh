@@ -4,9 +4,10 @@
 $passport_client = EDH::Passport::API.new
 ```
 
-####optional access_token
+####optional 
 ```ruby
-$passport_client = EDH::Passport::API.new(nil, "http://dummy-passport.dev")
+options: app_token, server, access_token (user)
+$passport_client = EDH::Passport::API.new(:server => "http://dummy-passport.dev")
 ```
 ####set the user token
 ```ruby

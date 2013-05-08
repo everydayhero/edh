@@ -8,9 +8,10 @@ module EDH
       # @param [String] access_token access token
       # @note If no access token is provided, you can only access some public information.
       # @return [EDH::Passport::API] the API client
-      def initialize(access_token = nil, server = nil)
-        @access_token = access_token
-        @server = server
+      def initialize options = {}
+        @access_token = options[:access_token]
+        @app_access_token = options[:app_token]
+        @server = options[:server]
       end
 
       attr_accessor :access_token

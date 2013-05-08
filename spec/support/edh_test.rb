@@ -121,7 +121,7 @@ module EDHTest
   def self.validate_user_info(token)
     print "Validating permissions for live testing..."
     # make sure we have the necessary permissions
-    api = EDH::Passport::API.new(token)
+    api = EDH::Passport::API.new(:access_token => token)
     perms = api.fql_query("select #{testing_permissions} from permissions where uid = me()")[0]
     perms.each_pair do |perm, value|
       if value == (perm == "read_insights" ? 1 : 0) # live testing depends on insights calls failing

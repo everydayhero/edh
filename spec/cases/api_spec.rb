@@ -18,7 +18,7 @@ describe "EDH::Passport::API" do
 
   it "includes an access token if given" do
     token = 'adfadf'
-    service = EDH::Passport::API.new token
+    service = EDH::Passport::API.new(:access_token => token)
 
     EDH.should_receive(:make_request).with(
       anything,
@@ -32,7 +32,7 @@ describe "EDH::Passport::API" do
 
   it "has an attr_reader for access token" do
     token = 'adfadf'
-    service = EDH::Passport::API.new token
+    service = EDH::Passport::API.new(:access_token => token)
     service.access_token.should == token
   end
 
@@ -127,7 +127,7 @@ describe "EDH::Passport::API" do
 
   describe "with an access token" do
     before(:each) do
-      @api = EDH::Passport::API.new(@token)
+      @api = EDH::Passport::API.new(:access_token => @token)
     end
 
     it_should_behave_like "EDH RestAPI"
