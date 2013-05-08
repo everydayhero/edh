@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/everydayhero/edh.png?branch=master)](https://travis-ci.org/everydayhero/edh)
+
 ####config/initializers
 #### defaults to using production
 ```ruby
