@@ -1,3 +1,8 @@
+v0.3
+====
+
+* Allow config to be set via a block.
+
 v0.2
 ====
 
