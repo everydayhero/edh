@@ -10,7 +10,10 @@ group :development, :test do
   # Testing infrastructure
   gem 'guard'
   gem 'guard-rspec'
-  gem 'coveralls', require: false
+
+  if RUBY_VERSION >= '1.9'
+    gem 'coveralls', require: false
+  end
 
   if RUBY_PLATFORM =~ /darwin/
     # OS X integration
