@@ -12,7 +12,7 @@ group :development, :test do
   gem 'guard-rspec'
 
   if RUBY_VERSION >= '1.9'
-    gem 'coveralls', require: false
+    gem 'coveralls', :require => false
   end
 
   if RUBY_PLATFORM =~ /darwin/
