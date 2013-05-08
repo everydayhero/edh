@@ -18,7 +18,9 @@ end
 
 # load the library
 require 'edh'
+require 'coveralls'
 
+Coveralls.wear!
 # Support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
