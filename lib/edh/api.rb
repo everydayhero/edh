@@ -3,18 +3,39 @@ require 'edh/api/rest_api'
 
 module EDH
   module Passport
+    class << self
+      attr_accessor :configuration
+      
+      def config
+        self.configuration || Configuration.new
+      end
+    end
+    
+    def self.configure
+      self.configuration ||= Configuration.new
+      yield(configuration)
+    end
+
+    class Configuration
+      attr_accessor :access_token, :app_access_token, :server
+
+      def initialize
+      end
+    end
+
     class API
+      attr_accessor :access_token, :app_access_token, :server
+      
       # Creates a new API client.
       # @param [String] access_token access token
       # @note If no access token is provided, you can only access some public information.
       # @return [EDH::Passport::API] the API client
       def initialize options = {}
-        @access_token = options[:access_token]
-        @app_access_token = options[:app_token]
-        @server = options[:server]
+         @access_token = options[:access_token] || Passport.config.access_token
+         @app_access_token = options[:app_access_token] || Passport.config.app_access_token
+         @server = options[:server] || Passport.config.server
       end
 
-      attr_accessor :access_token
 
       include RestAPIMethods
 

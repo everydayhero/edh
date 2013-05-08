@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe "EDH::Passport::API" do
   before(:each) do
+    EDH::Passport.configuration = nil
     @service = EDH::Passport::API.new
   end
 
@@ -34,6 +35,24 @@ describe "EDH::Passport::API" do
     token = 'adfadf'
     service = EDH::Passport::API.new(:access_token => token)
     service.access_token.should == token
+  end
+  
+  it "has an attr_reader for app token" do
+    EDH::Passport.configure do |config|
+      config.app_access_token = "my app token"
+    end
+
+    service = EDH::Passport::API.new
+    service.app_access_token.should == "my app token"
+  end
+  
+  it "has an attr_reader for server" do
+    EDH::Passport.configure do |config|
+      config.server = "http://example.com"
+    end
+
+    service = EDH::Passport::API.new
+    service.server.should == "http://example.com"
   end
 
   it "gets the attribute of a EDH::HTTPService::Response given by the http_component parameter" do

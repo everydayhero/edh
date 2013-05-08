@@ -1,38 +1,43 @@
 ####config/initializers
-#### defaults to using production
-```ruby
-$passport_client = EDH::Passport::API.new
-```
 
 ####optional 
 ```ruby
-#options: app_token, server, access_token (user)
-#access_token is used for sending requests first, then falls back to app_token if that exists.
-$passport_client = EDH::Passport::API.new(:server => "http://dummy-passport.dev")
+#Configure passport connection
+EDH::Passport.configure do |config|
+  config.server = 'http://dummy-passport.dev'
+  config.app_access_token = "123456"
+end
 ```
-####set the user token
+
+##Setup a client without a user access token
 ```ruby
-$passport_client.access_token = "abc"
+passport_client = EDH::Passport::API.new
+
+```
+
+##Setup a client with a user access token
+```ruby
+passport_client = EDH::Passport::API.new(:access_token => "user_token")
+
 ```
 
 ####create returns an action id
 ```ruby
-$passport_client.create("pages.fundraise", {:abc => "def", :cats => "dogs"})
+passport_client.create("pages.fundraise", {:abc => "def", :cats => "dogs"})
 => 1234
 #sending json example
-$passport_client.create("pages.fundraise", "{\"abc\":\"def\",\"cats\":\"dogs\"}")
+passport_client.create("pages.fundraise", "{\"abc\":\"def\",\"cats\":\"dogs\"}")
 ```
 
 ####update an action
 ```ruby
-$passport_client.update(1234, {:abc => "12345", :cats => "6789"})
+passport_client.update(1234, {:abc => "12345", :cats => "6789"})
 ```
 
 ####delete an action
 ```ruby
-$passport_client.delete(1234)
+passport_client.delete(1234)
 ```
-
 
 Testing
 -----
