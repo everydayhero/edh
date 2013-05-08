@@ -14,13 +14,11 @@ end
 ##Setup a client without a user access token
 ```ruby
 passport_client = EDH::Passport::API.new
-
 ```
 
 ##Setup a client with a user access token
 ```ruby
 passport_client = EDH::Passport::API.new(:access_token => "user_token")
-
 ```
 
 ####create returns an action id
@@ -40,6 +38,18 @@ passport_client.update(1234, {:abc => "12345", :cats => "6789"})
 ```ruby
 passport_client.delete(1234)
 ```
+
+Errors
+-----
+
+Errors that can be raised are:
+```ruby
+EDH::Passport::ServerError #5XX error on Passport
+EDH::Passport::ClientError #4XX error on Passport
+MultiJson::DecodeError #Response decode error
+Faraday::Error::ConnectionFailed #connection failure
+```
+
 
 Testing
 -----
