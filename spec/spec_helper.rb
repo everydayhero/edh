@@ -16,13 +16,13 @@ if RUBY_VERSION == '1.9.2' && RUBY_PATCHLEVEL < 290 && RUBY_ENGINE != "macruby"
   YAML::ENGINE.yamler = 'syck'
 end
 
-# load the library
-require 'edh'
-
 if RUBY_VERSION >= '1.9'
   require 'coveralls'
   Coveralls.wear!
 end
+
+# load the library
+require 'edh'
 
 # Support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
