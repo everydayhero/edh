@@ -20,10 +20,15 @@ require 'simplecov'
 
 if RUBY_VERSION >= '1.9'
   require 'coveralls'
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+    SimpleCov::Formatter::HTMLFormatter,
+    Coveralls::SimpleCov::Formatter
+  ]
   Coveralls.wear!
+else
+  SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 end
 
-SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 SimpleCov.start
 
 # load the library
