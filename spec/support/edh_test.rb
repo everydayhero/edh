@@ -70,47 +70,6 @@ module EDHTest
     self.search_time = data["search_time"] || (Time.now - 3600).to_s
   end
 
-  def self.testing_permissions
-    "read_stream, publish_stream, user_photos, user_videos, read_insights"
-  end
-
-  def self.create_test_users
-    begin
-      @live_testing_user = @test_user_api.create(true, EDHTest.testing_permissions, :name => EDHTest.user1_name)
-      @live_testing_friend = @test_user_api.create(true, EDHTest.testing_permissions, :name => EDHTest.user2_name)
-      @test_user_api.befriend(@live_testing_user, @live_testing_friend)
-      self.oauth_token = @live_testing_user["access_token"]
-    rescue Exception => e
-      Kernel.warn("Problem creating test users! #{e.message}")
-      raise
-    end
-  end
-
-  def self.destroy_test_users
-    [@live_testing_user, @live_testing_friend].each do |u|
-      puts "Unable to delete test user #{u.inspect}" if u && !(@test_user_api.delete(u) rescue false)
-    end
-  end
-
-  def self.validate_user_info(token)
-    print "Validating permissions for live testing..."
-    # make sure we have the necessary permissions
-    api = EDH::Passport::API.new(:access_token => token)
-    perms = api.fql_query("select #{testing_permissions} from permissions where uid = me()")[0]
-    perms.each_pair do |perm, value|
-      if value == (perm == "read_insights" ? 1 : 0) # live testing depends on insights calls failing
-        puts "failed!\n" # put a new line after the print above
-        raise ArgumentError, "Your access token must have the read_stream, publish_stream, and user_photos permissions, and lack read_insights.  You have: #{perms.inspect}"
-      end
-    end
-    puts "done!"
-  end
-
-  # Info about the testing environment
-  def self.real_user?
-    !(mock_interface? || @test_user_api)
-  end
-
   def self.test_user?
     !!@test_user_api
   end
@@ -123,34 +82,6 @@ module EDHTest
   def self.user1
     # user ID, either numeric or username
     test_user? ? @live_testing_user["id"] : "koppel"
-  end
-
-  def self.user1_id
-    # numerical ID, used for FQL
-    # (otherwise the two IDs are interchangeable)
-    test_user? ? @live_testing_user["id"] : 2905623
-  end
-
-  def self.user1_name
-    "Alex"
-  end
-
-  def self.user2
-    # see notes for user1
-    test_user? ? @live_testing_friend["id"] : "lukeshepard"
-  end
-
-  def self.user2_id
-    # see notes for user1
-    test_user? ? @live_testing_friend["id"] : 2901279
-  end
-
-  def self.user2_name
-    "Luke"
-  end
-
-  def self.page
-    "facebook"
   end
 
   def self.app_properties

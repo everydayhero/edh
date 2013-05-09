@@ -125,6 +125,11 @@ describe "EDH::HTTPService" do
         EDH::HTTPService.make_request("anything", {}, "get")
       end
 
+      it "merges EDH::HTTPService.server" do
+        server = "http://example.com"
+        EDH::HTTPService.server(:server => server).should == server
+      end
+
       it "merges any provided options into the request params" do
         options = {:a => 2, :c => "3"}
         Faraday.should_receive(:new).with(anything, hash_including(options)).and_return(@mock_connection)

@@ -44,9 +44,7 @@ module EDH
               'message' => response_hash['error_msg']
             }
 
-            if response.status >= 500
-              raise ServerError.new(response.status, response.body, error_info)
-            else
+            if response.status >= 400
               raise ClientError.new(response.status, response.body, error_info)
             end
           end

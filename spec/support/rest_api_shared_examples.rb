@@ -107,8 +107,18 @@ shared_examples_for "EDH RestAPI" do
     end
 
     it "throws an APIError if the status code >= 400" do
+      EDH.stub(:make_request).and_return(EDH::HTTPService::Response.new(400, '{"error_code": "An error occurred!"}', {}))
+      lambda { @api.rest_call(EDHTest.user1, {}) }.should raise_exception(EDH::Passport::ClientError)
+    end
+
+    it "throws an APIError if the status code >= 400 and not fail due to broken json" do
+      EDH.stub(:make_request).and_return(EDH::HTTPService::Response.new(400, '{"e', {}))
+      lambda { @api.rest_call(EDHTest.user1, {}) }.should raise_exception(EDH::Passport::ClientError)
+    end
+
+    it "throws an ServerError if the status code >= 500" do
       EDH.stub(:make_request).and_return(EDH::HTTPService::Response.new(500, '{"error_code": "An error occurred!"}', {}))
-      lambda { @api.rest_call(EDHTest.user1, {}) }.should raise_exception(EDH::Passport::APIError)
+      lambda { @api.rest_call(EDHTest.user1, {}) }.should raise_exception(EDH::Passport::ServerError)
     end
   end
 end
