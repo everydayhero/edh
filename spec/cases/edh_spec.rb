@@ -15,7 +15,7 @@ describe EDH do
 
     describe EDH::Passport do      
       it "defines REST_SERVER" do
-        EDH::Passport::REST_SERVER.should == "passport.everydayhero.com/api/v1"
+        EDH::Passport::REST_SERVER.should == "https://passport.everydayhero.com/api/v1"
       end
     end
   end
@@ -27,19 +27,6 @@ describe EDH do
     
     after :each do
       EDH.http_service = @service
-    end
-
-    it "invokes deprecated_interface if present" do
-      mock_service = stub("http service")
-      mock_service.should_receive(:deprecated_interface)
-      EDH.http_service = mock_service
-    end
-    
-    it "does not set the service if it's deprecated" do
-      mock_service = stub("http service")
-      mock_service.stub(:deprecated_interface)
-      EDH.http_service = mock_service
-      EDH.http_service.should == @service
     end
 
     it "sets the service if it's not deprecated" do

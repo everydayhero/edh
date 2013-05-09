@@ -5,7 +5,6 @@ require 'multi_json'
 # include edh modules
 require 'edh/errors'
 require 'edh/api'
-require 'edh/test_users'
 
 # HTTP module so we can communicate with Passport
 require 'edh/http_service'
@@ -26,15 +25,7 @@ module EDH
   # @private
   # For current HTTPServices, switch the service as expected.
   def self.http_service=(service)
-    if service.respond_to?(:deprecated_interface)
-      # if this is a deprecated module, support the old interface
-      # by changing the default adapter so the right library is used
-      # we continue to use the single HTTPService module for everything
-      service.deprecated_interface 
-    else
-      # if it's a real http_service, use it
-      @http_service = service
-    end
+    @http_service = service
   end
 
   # An convenenient alias to EDH.http_service.make_request. 

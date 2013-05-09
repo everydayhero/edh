@@ -49,8 +49,6 @@ module EDH
       # @param verb the HTTP method to use
       # @param options request-related options for EDH and Faraday.
       # @option options [Symbol] :http_component which part of the response (headers, body, or status) to return
-      # @option options [Boolean] :use_ssl force SSL for this request, even if it's tokenless.
-      #                                    (All API requests with access tokens use SSL.)
       # @param error_checking_block a block to evaluate the response status for additional JSON-encoded errors
       #
       # @yield The response for evaluation

@@ -35,13 +35,6 @@ module EDHTest
       rescue LoadError
         puts "Unable to load adapter #{adapter}, using Net::HTTP."
       end
-
-      # use a test user unless the developer wants to test against a real profile
-      unless token = EDHTest.oauth_token
-        EDHTest.setup_test_users
-      else
-        EDHTest.validate_user_info(token)
-      end
     end
   end
 
@@ -79,25 +72,6 @@ module EDHTest
 
   def self.testing_permissions
     "read_stream, publish_stream, user_photos, user_videos, read_insights"
-  end
-
-  def self.setup_test_users
-    print "Setting up test users..."
-    @test_user_api = EDH::Passport::TestUsers.new(:app_id => self.app_id, :secret => self.secret)
-
-    RSpec.configure do |config|
-      config.before :suite do
-        # before each test module, create two test users with specific names and befriend them
-        EDHTest.create_test_users
-      end
-
-      config.after :suite do
-        # after each test module, delete the test users to avoid cluttering up the application
-        EDHTest.destroy_test_users
-      end
-    end
-
-    puts "done."
   end
 
   def self.create_test_users

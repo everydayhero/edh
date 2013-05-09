@@ -1,6 +1,6 @@
 module EDH
   module Passport
-    REST_SERVER = "passport.everydayhero.com/api/v1"
+    REST_SERVER = "https://passport.everydayhero.com/api/v1"
 
     # Methods used to interact with Passport's REST API.  
 

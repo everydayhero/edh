@@ -140,12 +140,6 @@ describe "EDH::HTTPService" do
         EDH::HTTPService.make_request("anything", {}, "get", options)
       end
 
-      it "allows you to set other verify modes if you really want" do
-        options = {:ssl => {:verify => :foo}}
-        Faraday.should_receive(:new).with(anything, hash_including(options)).and_return(@mock_connection)
-        EDH::HTTPService.make_request("anything", {"access_token" => "foo"}, "get", options)
-      end
-
       it "calls server with the composite options" do
         options = {:a => 2, :c => "3"}
         http_options = {:a => :a}
@@ -237,87 +231,6 @@ describe "EDH::HTTPService" do
           log_message.match(/\{.*\}/).should_not be_nil
         end
         EDH::HTTPService.make_request("anything", args, "post")
-      end
-    end
-  end
-
-  describe "deprecated options" do
-    before :each do
-      EDH::HTTPService.stub(:http_options).and_return({})
-      @service = EDH.http_service
-    end
-
-    after :each do
-      EDH.http_service = @service
-    end
-
-    describe "per-request options" do
-      before :each do
-        # Setup stubs for make_request to execute without exceptions
-        @mock_body = stub('Typhoeus response body')
-        @mock_headers_hash = stub({:value => "headers hash"})
-        @mock_http_response = stub("Faraday Response", :status => 200, :headers => @mock_headers_hash, :body => @mock_body)
-
-        @mock_connection = stub("Faraday connection")
-        @mock_connection.stub(:get).and_return(@mock_http_response)
-        @mock_connection.stub(:post).and_return(@mock_http_response)
-        Faraday.stub(:new).and_return(@mock_connection)
-      end
-
-      describe ":typhoeus_options" do
-        it "merges any typhoeus_options into options" do
-          typhoeus_options = {:a => 2}
-          Faraday.should_receive(:new).with(anything, hash_including(typhoeus_options)).and_return(@mock_connection)
-          EDH::HTTPService.make_request("anything", {}, "get", :typhoeus_options => typhoeus_options)
-        end
-
-        it "deletes the typhoeus_options key" do
-          typhoeus_options = {:a => 2}
-          Faraday.should_receive(:new).with(anything, hash_not_including(:typhoeus_options => typhoeus_options)).and_return(@mock_connection)
-          EDH::HTTPService.make_request("anything", {}, "get", :typhoeus_options => typhoeus_options)
-        end
-      end
-
-      describe ":ca_path" do
-        it "sets any ca_path into options[:ssl]" do
-          ca_path = :foo
-          Faraday.should_receive(:new).with(anything, hash_including(:ssl => hash_including(:ca_path => ca_path))).and_return(@mock_connection)
-          EDH::HTTPService.make_request("anything", {}, "get", :ca_path => ca_path)
-        end
-
-        it "deletes the ca_path key" do
-          ca_path = :foo
-          Faraday.should_receive(:new).with(anything, hash_not_including(:ca_path => ca_path)).and_return(@mock_connection)
-          EDH::HTTPService.make_request("anything", {}, "get", :ca_path => ca_path)
-        end
-      end
-
-      describe ":ca_file" do
-        it "sets any ca_file into options[:ssl]" do
-          ca_file = :foo
-          Faraday.should_receive(:new).with(anything, hash_including(:ssl => hash_including(:ca_file => ca_file))).and_return(@mock_connection)
-          EDH::HTTPService.make_request("anything", {}, "get", :ca_file => ca_file)
-        end
-
-        it "deletes the ca_file key" do
-          ca_file = :foo
-          Faraday.should_receive(:new).with(anything, hash_not_including(:ca_file => ca_file)).and_return(@mock_connection)
-          EDH::HTTPService.make_request("anything", {}, "get", :ca_file => ca_file)
-        end
-      end
-
-      describe ":verify_mode" do
-        it "sets any verify_mode into options[:ssl]" do
-          verify_mode = :foo
-          Faraday.should_receive(:new).with(anything, hash_including(:ssl => hash_including(:verify_mode => verify_mode))).and_return(@mock_connection)
-          EDH::HTTPService.make_request("anything", {}, "get", :verify_mode => verify_mode)
-        end
-
-        it "deletes the verify_mode key" do
-          verify_mode = :foo
-          Faraday.should_receive(:new).with(anything, hash_not_including(:verify_mode => verify_mode)).and_return(@mock_connection)
-          EDH::HTTPService.make_request("anything", {}, "get", :verify_mode => verify_mode)
-        end
       end
     end
   end

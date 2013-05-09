@@ -25,7 +25,6 @@ module EDH
     #
     # @param options various flags to indicate which server to use.
     # @option options :rest_api use the old REST API instead of the Graph API
-    # @option options :use_ssl force https, even if not needed
     #
     # @return a complete server address with protocol
     def self.server(options = {})
@@ -33,7 +32,6 @@ module EDH
         options[:server]
       else
         server = Passport::REST_SERVER
-        "#{options[:use_ssl] ? "https" : "http"}://#{server}"
       end
     end
 
@@ -61,11 +59,7 @@ module EDH
       params = args.inject({}) {|hash, kv| hash[kv.first.to_s] = kv.last; hash}
 
       # figure out our options for this request
-      request_options = {:params => (verb == "get" ? params : {})}.merge(http_options || {}).merge(process_options(options))
-      if request_options[:use_ssl]
-        ssl = (request_options[:ssl] ||= {})
-        ssl[:verify] = true unless ssl.has_key?(:verify)
-      end
+      request_options = {:params => (verb == "get" ? params : {})}.merge(http_options || {}).merge(options)
 
       # set up our Faraday connection
       # we have to manually assign params to the URL or the
@@ -93,50 +87,6 @@ module EDH
         key_and_value[1] = MultiJson.dump(key_and_value[1]) unless key_and_value[1].is_a? String
         "#{key_and_value[0].to_s}=#{CGI.escape key_and_value[1]}"
       end).join("&")
-    end
-
-    private
-
-    def self.process_options(options)
-      if typhoeus_options = options.delete(:typhoeus_options)
-        EDH::Utils.deprecate("typhoeus_options should now be included directly in the http_options hash.  Support for this key will be removed in a future version.")
-        options = options.merge(typhoeus_options)
-      end
-
-      if ca_file = options.delete(:ca_file)
-        EDH::Utils.deprecate("http_options[:ca_file] should now be passed inside (http_options[:ssl] = {}) -- that is, http_options[:ssl][:ca_file].  Support for this key will be removed in a future version.")
-        (options[:ssl] ||= {})[:ca_file] = ca_file
-      end
-
-      if ca_path = options.delete(:ca_path)
-        EDH::Utils.deprecate("http_options[:ca_path] should now be passed inside (http_options[:ssl] = {}) -- that is, http_options[:ssl][:ca_path].  Support for this key will be removed in a future version.")
-        (options[:ssl] ||= {})[:ca_path] = ca_path
-      end
-
-      if verify_mode = options.delete(:verify_mode)
-        EDH::Utils.deprecate("http_options[:verify_mode] should now be passed inside (http_options[:ssl] = {}) -- that is, http_options[:ssl][:verify_mode].  Support for this key will be removed in a future version.")
-        (options[:ssl] ||= {})[:verify_mode] = verify_mode
-      end
-
-      options
-    end
-  end
-
-  # @private
-  module TyphoeusService
-    def self.deprecated_interface
-      # support old-style interface with a warning
-      EDH::Utils.deprecate("the TyphoeusService module is deprecated; to use Typhoeus, set Faraday.default_adapter = :typhoeus.  Enabling Typhoeus for all Faraday connections.")
-      Faraday.default_adapter = :typhoeus
-    end
-  end
-
-  # @private
-  module NetHTTPService
-    def self.deprecated_interface
-      # support old-style interface with a warning
-      EDH::Utils.deprecate("the NetHTTPService module is deprecated; to use Net::HTTP, set Faraday.default_adapter = :net_http.  Enabling Net::HTTP for all Faraday connections.")
-      Faraday.default_adapter = :net_http
     end
   end
 end
