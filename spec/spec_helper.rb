@@ -16,10 +16,15 @@ if RUBY_VERSION == '1.9.2' && RUBY_PATCHLEVEL < 290 && RUBY_ENGINE != "macruby"
   YAML::ENGINE.yamler = 'syck'
 end
 
+require 'simplecov'
+
 if RUBY_VERSION >= '1.9'
   require 'coveralls'
   Coveralls.wear!
 end
+
+SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
+SimpleCov.start
 
 # load the library
 require 'edh'

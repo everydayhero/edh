@@ -10,6 +10,8 @@ group :development, :test do
   # Testing infrastructure
   gem 'guard'
   gem 'guard-rspec'
+  
+  gem 'simplecov', :require => false
 
   if RUBY_VERSION >= '1.9'
     gem 'coveralls', :require => false

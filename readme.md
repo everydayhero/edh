@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/everydayhero/edh.png?branch=master)](https://travis-ci.org/everydayhero/edh)
+[![Code Climate](https://codeclimate.com/github/everydayhero/edh.png)](https://codeclimate.com/github/everydayhero/edh)
+[![Coverage Status](https://coveralls.io/repos/everydayhero/edh/badge.png?branch=master)](https://coveralls.io/r/everydayhero/edh)
 
 ####config/initializers
 
