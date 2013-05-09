@@ -74,10 +74,6 @@ module EDHTest
     !!@test_user_api
   end
 
-  def self.mock_interface?
-    EDH.http_service == EDH::MockHTTPService
-  end
-
   # Data for testing
   def self.user1
     # user ID, either numeric or username
