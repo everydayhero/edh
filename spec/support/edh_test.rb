@@ -79,8 +79,4 @@ module EDHTest
     # user ID, either numeric or username
     test_user? ? @live_testing_user["id"] : "koppel"
   end
-
-  def self.app_properties
-    mock_interface? ? {"desktop" => 0} : {"description" => "A test framework for EDH and its users.  (#{rand(10000).to_i})"}
-  end
 end
