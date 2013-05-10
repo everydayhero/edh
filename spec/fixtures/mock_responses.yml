@@ -1,0 +1,25 @@
+# Responses by MockHTTPService are taken directly from
+# this file.
+#
+# Structure
+# ----------
+#
+# path:
+#   arguments:    # sorted by key
+#     method:     # HTTP method (GET, POST, DELETE, etc.)
+#       with_token:
+#       no_token:
+
+# ====== REST API =====
+rest_api:
+
+# -- Stubbed Responses --
+  foo:
+    'no_args':
+      get:
+        no_token: '[{}]'
+        with_token: '[{}]'
+    a=2:
+      get:
+        no_token: '[{}]'
+        with_token: '[{}]'
