@@ -61,3 +61,16 @@ Unit tests are provided for all of EDH's methods.  By default, these tests run a
 # From anywhere in the project directory:
 bundle exec rake spec
 ```
+
+###Built and tested in:
+
+  - 1.8.7
+  - 1.9.2
+  - 1.9.3
+  - ruby-head
+  - jruby-18mode # JRuby in 1.8 mode
+  - jruby-19mode # JRuby in 1.9 mode
+  - rbx-18mode
+  - rbx-19mode
+  - ree
+
