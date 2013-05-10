@@ -24,7 +24,6 @@ if RUBY_VERSION >= '1.9'
     SimpleCov::Formatter::HTMLFormatter,
     Coveralls::SimpleCov::Formatter
   ]
-  Coveralls.wear!
 else
   SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 end

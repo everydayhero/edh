@@ -42,9 +42,26 @@ describe EDH do
       args = {:a => 2}
       verb = "get"
       options = {:c => :d}
-      
+
       EDH.http_service.should_receive(:make_request).with(path, args, verb, options)
       EDH.make_request(path, args, verb, options)
+    end
+
+    it "passes all its nil args to the mock http_service" do
+      path = "foo"
+      verb = "get"
+
+      EDH.http_service = EDH::MockHTTPService
+      EDH.make_request(path, nil, verb, nil)
+    end
+
+    it "passes all its arguments with nil options to the http_service" do
+      path = "foo"
+      verb = "get"
+      args = {:a => "2"}
+
+      EDH.http_service = EDH::MockHTTPService
+      EDH.make_request(path, args, verb, nil)
     end
   end
 

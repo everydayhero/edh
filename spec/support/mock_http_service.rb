@@ -18,7 +18,9 @@ module EDH
     TEST_DATA = {}
     TEST_DATA['search_time'] = (Time.now - 3600).to_s
 
-    RESPONSES = {}
+    mock_response_file_path = File.join(File.dirname(__FILE__), '..', 'fixtures', 'mock_responses.yml')
+    RESPONSES = YAML.load(ERB.new(IO.read(mock_response_file_path)).result(binding))
+
     def self.make_request(path, args, verb, options = {})
       if response = match_response(path, args, verb, options)
         # create response class object
@@ -27,17 +29,6 @@ module EDH
         else
           EDH::HTTPService::Response.new(response["code"] || 200, response["body"] || "", response["headers"] || {})
         end
-      else
-        # Raises an error message with the place in the data YML
-        # to place a mock as well as a URL to request from
-        # Passport's servers for the actual data
-        # (Don't forget to replace ACCESS_TOKEN with a real access token)
-        data_trace = [path, args, verb, options] * ': '
-
-        args = args == 'no_args' ? '' : "#{args}&"
-        args += 'format=json'
-
-        raise "Missing a mock response for #{data_trace}\nAPI PATH: #{[path, args].join('?')}"
       end
 
       response_object
@@ -52,6 +43,7 @@ module EDH
 
     # For a given query, see if our mock responses YAML has a resopnse for it.
     def self.match_response(path, args, verb, options = {})
+      args ||= {}
       server = 'rest_api'
       path = 'root' if path == '' || path == '/'
       verb = (verb || 'get').to_s
